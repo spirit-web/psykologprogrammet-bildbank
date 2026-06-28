@@ -1,0 +1,51 @@
+.course-header{
+
+display:flex;
+
+gap:40px;
+
+align-items:center;
+
+margin-bottom:40px;
+
+}
+
+.course-cover-large{
+
+width:420px;
+
+height:240px;
+
+object-fit:cover;
+
+border-radius:18px;
+
+box-shadow:0 12px 35px rgba(0,0,0,.15);
+
+}
+
+.course-header-info{
+
+flex:1;
+
+}
+
+.course-header-info h1{
+
+font-size:42px;
+
+margin-bottom:10px;
+
+color:#1d3557;
+
+}
+
+.course-header-info p{
+
+margin:10px 0;
+
+font-size:18px;
+
+color:#555;
+
+}

@@ -1,0 +1,33 @@
+.search-container{
+
+display:flex;
+
+justify-content:center;
+
+margin-bottom:40px;
+
+}
+
+.search-container input{
+
+width:900px;
+
+max-width:90%;
+
+padding:18px;
+
+font-size:20px;
+
+border-radius:18px;
+
+border:2px solid #DDD;
+
+outline:none;
+
+}
+
+.search-container input:focus{
+
+border-color:#16386B;
+
+}

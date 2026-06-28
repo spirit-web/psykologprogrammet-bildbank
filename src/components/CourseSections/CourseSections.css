@@ -1,0 +1,53 @@
+.section-grid{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:25px;
+
+margin:40px 0;
+
+}
+
+.section-card{
+
+background:white;
+
+border-radius:20px;
+
+padding:35px;
+
+text-align:center;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+cursor:pointer;
+
+transition:.25s;
+
+}
+
+.section-card:hover{
+
+transform:translateY(-8px);
+
+box-shadow:0 20px 40px rgba(0,0,0,.12);
+
+}
+
+.section-card h1{
+
+font-size:42px;
+
+margin-bottom:15px;
+
+}
+
+.section-card h3{
+
+margin-bottom:10px;
+
+color:#1d3557;
+
+}
