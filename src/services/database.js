@@ -6,7 +6,7 @@ export async function getCourses() {
 
         .from("courses")
 
-        .select("*")
+        .select("*, course_teachers(is_primary, teachers(id,name,image_url))")
 
         .order("term_id")
 

@@ -16,21 +16,31 @@ function TeacherForm({ refresh }) {
 
     const [courseIds, setCourseIds] = useState([]);
 
+    const [primaryCourseId, setPrimaryCourseId] = useState(null);
+
     const [uploading, setUploading] = useState(false);
 
     const [saving, setSaving] = useState(false);
 
     function toggleCourse(courseId) {
 
-        setCourseIds(current =>
+        setCourseIds(current => {
 
-            current.includes(courseId)
+            const next = current.includes(courseId)
 
                 ? current.filter(id => id !== courseId)
 
-                : [...current, courseId]
+                : [...current, courseId];
 
-        );
+            if (!next.includes(courseId) && primaryCourseId === courseId) {
+
+                setPrimaryCourseId(null);
+
+            }
+
+            return next;
+
+        });
 
     }
 
@@ -86,7 +96,7 @@ function TeacherForm({ refresh }) {
 
         if (created) {
 
-            await setTeacherCourses(created.id, courseIds);
+            await setTeacherCourses(created.id, courseIds, primaryCourseId);
 
             setName("");
 
@@ -95,6 +105,8 @@ function TeacherForm({ refresh }) {
             setBio("");
 
             setCourseIds([]);
+
+            setPrimaryCourseId(null);
 
             refresh?.();
 
@@ -190,7 +202,7 @@ function TeacherForm({ refresh }) {
 
             <label style={{ display: "block", fontWeight: 600, marginBottom: 8 }}>
 
-                Undervisar på kurser:
+                Undervisar på kurser (klicka ⭐ för att markera huvudlärare):
 
             </label>
 
@@ -200,7 +212,7 @@ function TeacherForm({ refresh }) {
 
                     courses.map(course => (
 
-                        <label
+                        <span
 
                             key={course.id}
 
@@ -220,29 +232,73 @@ function TeacherForm({ refresh }) {
 
                                 borderRadius: 20,
 
-                                cursor: "pointer",
-
                                 fontSize: 14
 
                             }}
 
                         >
 
-                            <input
+                            <label
 
-                                type="checkbox"
+                                style={{ display: "flex", alignItems: "center", gap: 6, cursor: "pointer" }}
 
-                                checked={courseIds.includes(course.id)}
+                            >
 
-                                onChange={() => toggleCourse(course.id)}
+                                <input
 
-                                style={{ display: "none" }}
+                                    type="checkbox"
 
-                            />
+                                    checked={courseIds.includes(course.id)}
 
-                            {course.name}
+                                    onChange={() => toggleCourse(course.id)}
 
-                        </label>
+                                    style={{ display: "none" }}
+
+                                />
+
+                                {course.name}
+
+                            </label>
+
+                            {
+
+                                courseIds.includes(course.id) &&
+
+                                <button
+
+                                    type="button"
+
+                                    onClick={() => setPrimaryCourseId(
+
+                                        primaryCourseId === course.id ? null : course.id
+
+                                    )}
+
+                                    title="Markera som huvudlärare"
+
+                                    style={{
+
+                                        background: "none",
+
+                                        border: "none",
+
+                                        cursor: "pointer",
+
+                                        fontSize: 15,
+
+                                        opacity: primaryCourseId === course.id ? 1 : 0.4
+
+                                    }}
+
+                                >
+
+                                    ⭐
+
+                                </button>
+
+                            }
+
+                        </span>
 
                     ))
 

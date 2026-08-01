@@ -4,6 +4,14 @@ import "./CourseGrid.css";
 
 function CourseCard({ course }) {
 
+  const primaryTeacher =
+
+    course.course_teachers?.find(row => row.is_primary)?.teachers ??
+
+    course.course_teachers?.[0]?.teachers ??
+
+    null;
+
   return (
 
     <Link
@@ -28,9 +36,43 @@ function CourseCard({ course }) {
 
           <h3>{course.name}</h3>
 
-          <p className="teacher">
-            👨‍🏫 {course.teacher}
-          </p>
+          {
+
+            primaryTeacher &&
+
+            <p className="teacher" style={{ display: "flex", alignItems: "center", gap: 8 }}>
+
+              {
+
+                primaryTeacher.image_url &&
+
+                <img
+
+                  src={primaryTeacher.image_url}
+
+                  alt={primaryTeacher.name}
+
+                  style={{
+
+                    width: 32,
+
+                    height: 32,
+
+                    borderRadius: "50%",
+
+                    objectFit: "cover"
+
+                  }}
+
+                />
+
+              }
+
+              {primaryTeacher.name}
+
+            </p>
+
+          }
 
           <p>
             {course.description}

@@ -10,6 +10,8 @@ updateTeacher,
 
 getTeacherCourseIds,
 
+getTeacherPrimaryCourseId,
+
 setTeacherCourses
 
 } from "../../services/adminDatabase";
@@ -29,6 +31,8 @@ const [editImage,setEditImage]=useState("");
 const [editBio,setEditBio]=useState("");
 
 const [editCourseIds,setEditCourseIds]=useState([]);
+
+const [editPrimaryCourseId,setEditPrimaryCourseId]=useState(null);
 
 const [editUploading,setEditUploading]=useState(false);
 
@@ -82,6 +86,8 @@ setEditBio(teacher.bio ?? "");
 
 setEditCourseIds(await getTeacherCourseIds(teacher.id));
 
+setEditPrimaryCourseId(await getTeacherPrimaryCourseId(teacher.id));
+
 }
 
 async function handleEditPhoto(event){
@@ -114,15 +120,23 @@ setEditImage(upload.publicUrl);
 
 function toggleEditCourse(courseId){
 
-setEditCourseIds(current=>
+setEditCourseIds(current=>{
 
-current.includes(courseId)
+const next = current.includes(courseId)
 
 ? current.filter(id=>id!==courseId)
 
-: [...current, courseId]
+: [...current, courseId];
 
-);
+if(!next.includes(courseId) && editPrimaryCourseId===courseId){
+
+setEditPrimaryCourseId(null);
+
+}
+
+return next;
+
+});
 
 }
 
@@ -144,7 +158,7 @@ bio:editBio
 
 );
 
-await setTeacherCourses(editing, editCourseIds);
+await setTeacherCourses(editing, editCourseIds, editPrimaryCourseId);
 
 setEditing(null);
 
@@ -322,7 +336,7 @@ onChange={e=>setEditBio(e.target.value)}
 
 courses.map(course=>(
 
-<label
+<span
 
 key={course.id}
 
@@ -342,13 +356,13 @@ padding:"6px 12px",
 
 borderRadius:20,
 
-cursor:"pointer",
-
 fontSize:13
 
 }}
 
 >
+
+<label style={{display:"flex",alignItems:"center",gap:6,cursor:"pointer"}}>
 
 <input
 
@@ -365,6 +379,46 @@ style={{display:"none"}}
 {course.name}
 
 </label>
+
+{
+
+editCourseIds.includes(course.id) &&
+
+<button
+
+type="button"
+
+onClick={()=>setEditPrimaryCourseId(
+
+editPrimaryCourseId===course.id ? null : course.id
+
+)}
+
+title="Markera som huvudlärare"
+
+style={{
+
+background:"none",
+
+border:"none",
+
+cursor:"pointer",
+
+fontSize:14,
+
+opacity: editPrimaryCourseId===course.id ? 1 : 0.4
+
+}}
+
+>
+
+⭐
+
+</button>
+
+}
+
+</span>
 
 ))
 

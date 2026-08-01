@@ -10,7 +10,7 @@ export async function getAllCourses() {
 
         .from("courses")
 
-        .select("*")
+        .select("*, course_teachers(is_primary, teachers(id,name,image_url))")
 
         .order("term_id")
 
@@ -454,7 +454,7 @@ export async function createTeacher(teacher) {
 
 }
 
-export async function setTeacherCourses(teacherId, courseIds) {
+export async function setTeacherCourses(teacherId, courseIds, primaryCourseId = null) {
 
     await supabase
 
@@ -474,7 +474,15 @@ export async function setTeacherCourses(teacherId, courseIds) {
 
         .from("course_teachers")
 
-        .insert(courseIds.map(courseId => ({ teacher_id: teacherId, course_id: courseId })));
+        .insert(courseIds.map(courseId => ({
+
+            teacher_id: teacherId,
+
+            course_id: courseId,
+
+            is_primary: courseId === primaryCourseId
+
+        })));
 
     if (error) {
 
@@ -507,6 +515,32 @@ export async function getTeacherCourseIds(teacherId) {
     }
 
     return data.map(row => row.course_id);
+
+}
+
+export async function getTeacherPrimaryCourseId(teacherId) {
+
+    const { data, error } = await supabase
+
+        .from("course_teachers")
+
+        .select("course_id")
+
+        .eq("teacher_id", teacherId)
+
+        .eq("is_primary", true)
+
+        .maybeSingle();
+
+    if (error) {
+
+        console.error(error);
+
+        return null;
+
+    }
+
+    return data?.course_id ?? null;
 
 }
 
