@@ -3,7 +3,6 @@ import "./CoursePage.css";
 import { useParams } from "react-router-dom";
 
 import CourseHeader from "../../components/CourseHeader/CourseHeader";
-import Stats from "../../components/Stats/Stats";
 import LectureList from "../../components/LectureList/LectureList";
 import CourseSections from "../../components/CourseSections/CourseSections";
 import BackButton from "../../components/BackButton/BackButton";
@@ -55,8 +54,6 @@ function CoursePage(){
             <div className="course-page">
 
                 <CourseHeader course={course}/>
-
-                <Stats course={course}/>
 
                 <CourseSections courseId={course.id}/>
 

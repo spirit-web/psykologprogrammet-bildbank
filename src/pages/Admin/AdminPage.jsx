@@ -11,8 +11,8 @@ import LectureList from "../../components/Admin/LectureList";
 import ImageForm from "../../components/Admin/ImageForm";
 import ImageList from "../../components/Admin/ImageList";
 
-import SlideForm from "../../components/Admin/SlideForm";
 import SlideList from "../../components/Admin/SlideList";
+import EditSlideModal from "../../components/Admin/EditSlideModal";
 
 import TeacherForm from "../../components/Admin/TeacherForm";
 import TeacherList from "../../components/Admin/TeacherList";
@@ -53,6 +53,8 @@ function AdminPage() {
     const [categories, setCategories] = useState([]);
 
     const [editingImage, setEditingImage] = useState(null);
+
+    const [editingSlide, setEditingSlide] = useState(null);
 
     async function loadAll() {
 
@@ -275,7 +277,11 @@ function AdminPage() {
 
                 <>
 
-                    <SlideForm refresh={loadAll} />
+                    <p style={{color:"#666"}}>
+
+                        Nya slides läggs till direkt på respektive föreläsningssida (fliken "Originalslides"). Här kan du bläddra, koppla om till rätt föreläsning eller ta bort.
+
+                    </p>
 
                     <SlideList
 
@@ -283,7 +289,7 @@ function AdminPage() {
 
                         onDelete={removeSlide}
 
-                        onEdit={(slide)=>console.log(slide)}
+                        onEdit={setEditingSlide}
 
                     />
 
@@ -300,6 +306,8 @@ function AdminPage() {
                     <TeacherList
 
                         teachers={teachers}
+
+                        courses={courses}
 
                         onDelete={removeTeacher}
 
@@ -350,6 +358,24 @@ function AdminPage() {
                 slides={slides}
 
                 onClose={() => setEditingImage(null)}
+
+                onSaved={loadAll}
+
+            />
+
+        }
+
+        {
+
+            editingSlide &&
+
+            <EditSlideModal
+
+                slide={editingSlide}
+
+                lectures={lectures}
+
+                onClose={() => setEditingSlide(null)}
 
                 onSaved={loadAll}
 

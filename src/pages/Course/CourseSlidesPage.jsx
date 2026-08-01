@@ -2,9 +2,10 @@ import { useParams } from "react-router-dom";
 
 import Navbar from "../../components/Navbar/Navbar";
 import BackButton from "../../components/BackButton/BackButton";
+import ImageViewer from "../../components/ImageGallery/ImageViewer";
 
 import useCourse from "../../hooks/useCourse";
-import useLectures from "../../hooks/useLectures";
+import useCourseSlides from "../../hooks/useCourseSlides";
 
 function CourseSlidesPage() {
 
@@ -12,9 +13,7 @@ function CourseSlidesPage() {
 
     const { course } = useCourse(id);
 
-    const { lectures, loading } = useLectures(id);
-
-    const lecturesWithFiles = lectures.filter(lecture => lecture.pdf_url);
+    const { slides, loading } = useCourseSlides(id);
 
     return (
 
@@ -22,77 +21,25 @@ function CourseSlidesPage() {
 
             <Navbar />
 
-            <div style={{ maxWidth: "900px", margin: "auto", padding: "40px" }}>
+            <div style={{ maxWidth: "1200px", margin: "auto", padding: "40px" }}>
 
                 <BackButton />
 
-                <h1>📄 Originalföreläsningar — {course?.name}</h1>
+                <h1>📄 Originalslides — {course?.name}</h1>
 
-                <p>Föreläsningars ursprungliga PDF/PPTX-material.</p>
+                <p>Slidesen som psykologverktygs-bilderna i den här kursen är skapade utifrån.</p>
 
-                {
+                <ImageViewer
 
-                    loading &&
+                    images={slides}
 
-                    <p>Laddar...</p>
+                    loading={loading}
 
-                }
+                    showActions={false}
 
-                {
+                    emptyMessage="Inga originalslides uppladdade för den här kursens föreläsningar än."
 
-                    !loading && lecturesWithFiles.length === 0 &&
-
-                    <p>Inget originalmaterial uppladdat för den här kursens föreläsningar än.</p>
-
-                }
-
-                <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
-
-                    {
-
-                        lecturesWithFiles.map(lecture => (
-
-                            <a
-
-                                key={lecture.id}
-
-                                href={lecture.pdf_url}
-
-                                target="_blank"
-
-                                rel="noreferrer"
-
-                                style={{
-
-                                    display: "block",
-
-                                    padding: "16px 20px",
-
-                                    background: "white",
-
-                                    borderRadius: 12,
-
-                                    boxShadow: "0 4px 15px rgba(0,0,0,.06)",
-
-                                    textDecoration: "none",
-
-                                    color: "#214c9d",
-
-                                    fontWeight: 600
-
-                                }}
-
-                            >
-
-                                📄 {lecture.title}
-
-                            </a>
-
-                        ))
-
-                    }
-
-                </div>
+                />
 
             </div>
 

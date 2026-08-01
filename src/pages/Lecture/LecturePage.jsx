@@ -1,8 +1,5 @@
 import { useParams } from "react-router-dom";
 
-import SlideViewer from "../../components/SlideViewer/SlideViewer";
-import LectureToolbar from "../../components/LectureToolbar/LectureToolbar";
-import LectureSearch from "../../components/LectureSearch/LectureSearch";
 import ImageGallery from "../../components/ImageGallery/ImageGallery";
 import LectureSidebar from "../../components/LectureSidebar/LectureSidebar";
 import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
@@ -43,7 +40,7 @@ function LecturePage() {
             }}
         >
 
-            <LectureSidebar />
+            <LectureSidebar courseId={lecture.course_id} />
 
             <div
                 style={{
@@ -72,31 +69,13 @@ function LecturePage() {
 
                 </h1>
 
-                <p>
+                {
 
-                    👨‍🏫 {lecture.teacher}
+                    lecture.teacher &&
 
-                </p>
+                    <p>👨‍🏫 {lecture.teacher}</p>
 
-                <p>
-
-                    📅 {lecture.date}
-
-                </p>
-
-                <p>
-
-                    🖼 {lecture.images} bilder
-
-                </p>
-
-                <LectureToolbar />
-
-                <LectureSearch />
-
-                <SlideViewer
-                    image="https://picsum.photos/1200/700"
-                />
+                }
 
                 <ImageGallery
                     lecture={lecture}

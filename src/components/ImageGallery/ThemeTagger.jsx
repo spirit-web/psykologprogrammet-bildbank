@@ -66,6 +66,8 @@ function ThemeTagger({ imageId }) {
 
         }
 
+        window.dispatchEvent(new Event("psykopedia-themes-changed"));
+
     }
 
     async function addNewTheme() {
@@ -85,6 +87,8 @@ function ThemeTagger({ imageId }) {
         await tagImage(imageId, created.id);
 
         setNewThemeName("");
+
+        window.dispatchEvent(new Event("psykopedia-themes-changed"));
 
     }
 

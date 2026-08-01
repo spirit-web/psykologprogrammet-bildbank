@@ -249,6 +249,32 @@ export async function createSlide(slide) {
 
 }
 
+export async function updateSlide(id, updates) {
+
+    const { data, error } = await supabase
+
+        .from("original_slides")
+
+        .update(updates)
+
+        .eq("id", id)
+
+        .select()
+
+        .single();
+
+    if (error) {
+
+        console.error(error);
+
+        return null;
+
+    }
+
+    return data;
+
+}
+
 export async function deleteSlide(id) {
 
     const { error } = await supabase
@@ -425,6 +451,62 @@ export async function createTeacher(teacher) {
     }
 
     return data;
+
+}
+
+export async function setTeacherCourses(teacherId, courseIds) {
+
+    await supabase
+
+        .from("course_teachers")
+
+        .delete()
+
+        .eq("teacher_id", teacherId);
+
+    if (courseIds.length === 0) {
+
+        return true;
+
+    }
+
+    const { error } = await supabase
+
+        .from("course_teachers")
+
+        .insert(courseIds.map(courseId => ({ teacher_id: teacherId, course_id: courseId })));
+
+    if (error) {
+
+        console.error(error);
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
+export async function getTeacherCourseIds(teacherId) {
+
+    const { data, error } = await supabase
+
+        .from("course_teachers")
+
+        .select("course_id")
+
+        .eq("teacher_id", teacherId);
+
+    if (error) {
+
+        console.error(error);
+
+        return [];
+
+    }
+
+    return data.map(row => row.course_id);
 
 }
 

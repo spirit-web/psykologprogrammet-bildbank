@@ -49,3 +49,47 @@ font-size:18px;
 color:#555;
 
 }
+
+.course-teachers{
+
+display:flex;
+
+gap:16px;
+
+flex-wrap:wrap;
+
+margin:12px 0;
+
+}
+
+.course-teacher-chip{
+
+display:flex;
+
+align-items:center;
+
+gap:10px;
+
+background:#f7f9fc;
+
+padding:6px 14px 6px 6px;
+
+border-radius:30px;
+
+font-weight:600;
+
+color:#333;
+
+}
+
+.course-teacher-chip img{
+
+width:36px;
+
+height:36px;
+
+border-radius:50%;
+
+object-fit:cover;
+
+}

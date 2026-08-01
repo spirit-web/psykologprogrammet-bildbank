@@ -12,7 +12,7 @@ import useSlides from "../../hooks/useSlides";
 
 function ImageGallery({ lecture }) {
 
-    const { images, loading: imagesLoading, addImage } = useImages(lecture.id);
+    const { images, loading: imagesLoading, addImage, removeImage } = useImages(lecture.id);
 
     const { slides, loading: slidesLoading, addSlide } = useSlides(lecture.id);
 
@@ -63,6 +63,8 @@ function ImageGallery({ lecture }) {
                     loading={imagesLoading}
 
                     emptyMessage="Inga bilder har lagts till för den här föreläsningen än."
+
+                    onDeleted={removeImage}
 
                     uploadSlot={
 

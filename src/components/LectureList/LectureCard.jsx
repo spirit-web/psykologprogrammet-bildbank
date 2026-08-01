@@ -26,23 +26,47 @@ function LectureCard({ lecture, onUploaded }) {
 
         >
 
+        {
+
+        lecture.cover &&
+
+        <img
+
+        src={lecture.cover}
+
+        alt={lecture.title}
+
+        style={{
+
+        width:"100%",
+
+        height:120,
+
+        objectFit:"cover",
+
+        borderRadius:10,
+
+        marginBottom:12
+
+        }}
+
+        />
+
+        }
+
         <h3>
 
-        📚 {lecture.title}
+        {lecture.featured && "⭐ "}📚 {lecture.title}
 
         </h3>
 
-        <p>
+        {
 
-        👨‍🏫 {lecture.teacher}
+        lecture.teacher &&
 
-        </p>
+        <p>👨‍🏫 {lecture.teacher}</p>
 
-        <p>
-
-        📅 {lecture.date}
-
-        </p>
+        }
 
         <p>
 

@@ -6,10 +6,14 @@ import SlideThumbnail from "../SlideViewer/SlideThumbnail";
 import ThemeTagger from "./ThemeTagger";
 
 import useFavorites from "../../hooks/useFavorites";
+import { deleteImage } from "../../services/adminDatabase";
+import { supabase } from "../../services/supabase";
 
-function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = true }) {
+function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = true, onDeleted }) {
 
     const { isFavorite, toggleFavorite } = useFavorites();
+
+    const [deleting, setDeleting] = useState(false);
 
     const [selectedImage, setSelectedImage] = useState(null);
 
@@ -192,6 +196,34 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
     }
 
+    async function handleDelete() {
+
+        if (!selectedImage) return;
+
+        if (!window.confirm(`Ta bort "${selectedImage.title || "bilden"}"? Går inte att ångra.`)) {
+
+            return;
+
+        }
+
+        setDeleting(true);
+
+        const path = selectedImage.image_url?.split("/object/public/images/")[1];
+
+        await deleteImage(selectedImage.id);
+
+        if (path) {
+
+            await supabase.storage.from("images").remove([path]);
+
+        }
+
+        setDeleting(false);
+
+        onDeleted?.(selectedImage.id);
+
+    }
+
     useEffect(() => {
 
         function handleKeyDown(event) {
@@ -299,6 +331,20 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
                                 </button>
 
                                 <ThemeTagger imageId={selectedImage.id} />
+
+                                <button
+
+                                    onClick={handleDelete}
+
+                                    disabled={deleting}
+
+                                    className="delete-image-button"
+
+                                >
+
+                                    {deleting ? "Tar bort..." : "🗑 Ta bort bild"}
+
+                                </button>
                             </>
                         }
 

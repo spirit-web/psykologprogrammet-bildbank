@@ -185,6 +185,8 @@ function HippocampusPage() {
 
                             emptyMessage="Inga bilder taggade med det här temat än — öppna en bild och klicka 🏷️ Teman för att koppla den hit."
 
+                            onDeleted={imageId => setImages(current => current.filter(image => image.id !== imageId))}
+
                         />
 
                     </>

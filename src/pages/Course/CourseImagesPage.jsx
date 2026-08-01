@@ -13,7 +13,7 @@ function CourseImagesPage() {
 
     const { course } = useCourse(id);
 
-    const { images, loading } = useCourseImages(id);
+    const { images, loading, removeImage } = useCourseImages(id);
 
     return (
 
@@ -25,7 +25,7 @@ function CourseImagesPage() {
 
                 <BackButton />
 
-                <h1>🖼 Alla bilder — {course?.name}</h1>
+                <h1>🖼 Alla psykologverktyg — {course?.name}</h1>
 
                 <p>Alla minnesbilder från kursens föreläsningar, samlade på ett ställe.</p>
 
@@ -36,6 +36,8 @@ function CourseImagesPage() {
                     loading={loading}
 
                     emptyMessage="Inga bilder kopplade till en föreläsning i den här kursen än."
+
+                    onDeleted={removeImage}
 
                 />
 

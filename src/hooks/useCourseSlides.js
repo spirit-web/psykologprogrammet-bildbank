@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 import { supabase } from "../services/supabase";
 
-export default function useCourseImages(courseId) {
+export default function useCourseSlides(courseId) {
 
-    const [images, setImages] = useState([]);
+    const [slides, setSlides] = useState([]);
 
     const [loading, setLoading] = useState(true);
 
@@ -16,7 +16,7 @@ export default function useCourseImages(courseId) {
 
             const { data, error } = await supabase
 
-                .from("images")
+                .from("original_slides")
 
                 .select("*, lectures!inner(course_id)")
 
@@ -28,11 +28,11 @@ export default function useCourseImages(courseId) {
 
                 console.error(error);
 
-                setImages([]);
+                setSlides([]);
 
             } else {
 
-                setImages(data);
+                setSlides(data);
 
             }
 
@@ -48,19 +48,11 @@ export default function useCourseImages(courseId) {
 
     }, [courseId]);
 
-    function removeImage(imageId) {
-
-        setImages(current => current.filter(image => image.id !== imageId));
-
-    }
-
     return {
 
-        images,
+        slides,
 
-        loading,
-
-        removeImage
+        loading
 
     };
 

@@ -4,6 +4,7 @@ import HomePage from "./pages/Home/HomePage";
 import CoursePage from "./pages/Course/CoursePage";
 import CourseImagesPage from "./pages/Course/CourseImagesPage";
 import CourseSlidesPage from "./pages/Course/CourseSlidesPage";
+import CourseThemesPage from "./pages/Course/CourseThemesPage";
 import LecturePage from "./pages/Lecture/LecturePage";
 import AdminPage from "./pages/Admin/AdminPage";
 import FavoritesPage from "./pages/Favorites/FavoritesPage";
@@ -33,6 +34,11 @@ function App(){
             <Route
                 path="/course/:id/slides"
                 element={<CourseSlidesPage/>}
+            />
+
+            <Route
+                path="/course/:id/begrepp"
+                element={<CourseThemesPage/>}
             />
 
             <Route

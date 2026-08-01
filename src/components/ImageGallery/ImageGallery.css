@@ -272,6 +272,24 @@ color:#3a2b00;
 
 }
 
+.zoom-toolbar button.delete-image-button{
+
+background:#fdecea;
+
+color:#c0392b;
+
+width:auto;
+
+padding:0 16px;
+
+}
+
+.zoom-toolbar button.delete-image-button:hover{
+
+background:#f8d7d3;
+
+}
+
 .theme-tagger{
 
 position:relative;

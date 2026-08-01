@@ -21,8 +21,8 @@ function CourseSections({ courseId }) {
 
         {
             icon:"🖼️",
-            title:"Bilder",
-            text:"Alla AI-bilder",
+            title:"Alla psykologverktyg",
+            text:"Alla bilder i kursen",
             onClick: () => navigate(`/course/${courseId}/bilder`)
         },
 
@@ -30,13 +30,13 @@ function CourseSections({ courseId }) {
             icon:"🧠",
             title:"Begrepp",
             text:"Psykologiska koncept",
-            onClick: () => navigate("/hippocampus")
+            onClick: () => navigate(`/course/${courseId}/begrepp`)
         },
 
         {
             icon:"📄",
-            title:"PDF",
-            text:"Originalföreläsningar",
+            title:"Originalslides",
+            text:"Slides bilderna skapades utifrån",
             onClick: () => navigate(`/course/${courseId}/slides`)
         }
 

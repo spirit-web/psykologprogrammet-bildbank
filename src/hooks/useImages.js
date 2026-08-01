@@ -34,13 +34,21 @@ export default function useImages(lectureId) {
 
     }
 
+    function removeImage(imageId) {
+
+        setImages(current => current.filter(image => image.id !== imageId));
+
+    }
+
     return {
 
         images,
 
         loading,
 
-        addImage
+        addImage,
+
+        removeImage
 
     };
 

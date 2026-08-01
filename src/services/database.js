@@ -54,9 +54,15 @@ export async function getLectures(courseId){
 
         .from("lectures")
 
-        .select("*, images(count)")
+        .select("*, image_count:images(count), cover:images(id,image_url)")
 
         .eq("course_id",courseId)
+
+        .order("id", { foreignTable: "cover", ascending: true })
+
+        .limit(1, { foreignTable: "cover" })
+
+        .order("featured", { ascending: false })
 
         .order("lecture_number");
 
@@ -72,7 +78,9 @@ export async function getLectures(courseId){
 
         ...lecture,
 
-        images: lecture.images?.[0]?.count ?? 0
+        cover: lecture.cover?.[0]?.image_url ?? null,
+
+        images: lecture.image_count?.[0]?.count ?? 0
 
     }));
 
@@ -147,6 +155,28 @@ export async function getSlides(lectureId) {
     }
 
     return data;
+
+}
+
+export async function getCourseTeachers(courseId) {
+
+    const { data, error } = await supabase
+
+        .from("course_teachers")
+
+        .select("teachers(id,name,title,image_url)")
+
+        .eq("course_id", courseId);
+
+    if (error) {
+
+        console.error(error);
+
+        return [];
+
+    }
+
+    return data.map(row => row.teachers).filter(Boolean);
 
 }
 

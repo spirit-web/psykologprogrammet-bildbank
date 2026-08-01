@@ -6,11 +6,15 @@ getAllTeachers,
 
 deleteTeacher,
 
-updateTeacher
+updateTeacher,
+
+getTeacherCourseIds,
+
+setTeacherCourses
 
 } from "../../services/adminDatabase";
 
-function TeacherList({ teachers: teachersProp }){
+function TeacherList({ teachers: teachersProp, courses=[] }){
 
 const [teachers,setTeachers]=useState(teachersProp ?? []);
 
@@ -25,6 +29,8 @@ const [editEmail,setEditEmail]=useState("");
 const [editImage,setEditImage]=useState("");
 
 const [editBio,setEditBio]=useState("");
+
+const [editCourseIds,setEditCourseIds]=useState([]);
 
 async function load(){
 
@@ -64,7 +70,7 @@ load();
 
 }
 
-function startEdit(teacher){
+async function startEdit(teacher){
 
 setEditing(teacher.id);
 
@@ -77,6 +83,22 @@ setEditEmail(teacher.email);
 setEditImage(teacher.image_url);
 
 setEditBio(teacher.bio);
+
+setEditCourseIds(await getTeacherCourseIds(teacher.id));
+
+}
+
+function toggleEditCourse(courseId){
+
+setEditCourseIds(current=>
+
+current.includes(courseId)
+
+? current.filter(id=>id!==courseId)
+
+: [...current, courseId]
+
+);
 
 }
 
@@ -101,6 +123,8 @@ bio:editBio
 }
 
 );
+
+await setTeacherCourses(editing, editCourseIds);
 
 setEditing(null);
 
@@ -263,6 +287,62 @@ onChange={e=>setEditBio(e.target.value)}
 />
 
 <br/><br/>
+
+<div style={{display:"flex",flexWrap:"wrap",gap:8,marginBottom:15}}>
+
+{
+
+courses.map(course=>(
+
+<label
+
+key={course.id}
+
+style={{
+
+display:"flex",
+
+alignItems:"center",
+
+gap:6,
+
+background: editCourseIds.includes(course.id) ? "#214c9d" : "#eee",
+
+color: editCourseIds.includes(course.id) ? "white" : "#333",
+
+padding:"6px 12px",
+
+borderRadius:20,
+
+cursor:"pointer",
+
+fontSize:13
+
+}}
+
+>
+
+<input
+
+type="checkbox"
+
+checked={editCourseIds.includes(course.id)}
+
+onChange={()=>toggleEditCourse(course.id)}
+
+style={{display:"none"}}
+
+/>
+
+{course.name}
+
+</label>
+
+))
+
+}
+
+</div>
 
 <button
 

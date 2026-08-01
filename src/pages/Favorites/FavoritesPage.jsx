@@ -9,7 +9,7 @@ import { supabase } from "../../services/supabase";
 
 function FavoritesPage() {
 
-    const { favoriteIds } = useFavorites();
+    const { favoriteIds, toggleFavorite } = useFavorites();
 
     const [images, setImages] = useState([]);
 
@@ -80,6 +80,14 @@ function FavoritesPage() {
                     loading={loading}
 
                     emptyMessage="Inga favoriter ännu — klicka ☆ Favorit på en bild för att spara den här."
+
+                    onDeleted={imageId => {
+
+                        setImages(current => current.filter(image => image.id !== imageId));
+
+                        toggleFavorite(imageId);
+
+                    }}
 
                 />
 
