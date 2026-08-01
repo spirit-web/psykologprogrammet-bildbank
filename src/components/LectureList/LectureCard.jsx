@@ -80,6 +80,50 @@ function LectureCard({ lecture, onUploaded }) {
 
         </button>
 
+        {
+
+        lecture.pdf_url &&
+
+        <button
+
+        onClick={event => {
+
+        event.stopPropagation();
+
+        window.open(lecture.pdf_url, "_blank", "noreferrer");
+
+        }}
+
+        style={{
+
+        display:"inline-block",
+
+        marginTop:8,
+
+        fontSize:13,
+
+        background:"none",
+
+        border:"none",
+
+        color:"#214c9d",
+
+        fontWeight:600,
+
+        cursor:"pointer",
+
+        padding:0
+
+        }}
+
+        >
+
+        📄 Öppna originalmaterial
+
+        </button>
+
+        }
+
         <div
 
         onClick={event => event.preventDefault()}

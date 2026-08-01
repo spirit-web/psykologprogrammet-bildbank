@@ -14,6 +14,8 @@ setTeacherCourses
 
 } from "../../services/adminDatabase";
 
+import { uploadFile } from "../../services/storage/storage";
+
 function TeacherList({ teachers: teachersProp, courses=[] }){
 
 const [teachers,setTeachers]=useState(teachersProp ?? []);
@@ -22,15 +24,13 @@ const [editing,setEditing]=useState(null);
 
 const [editName,setEditName]=useState("");
 
-const [editTitle,setEditTitle]=useState("");
-
-const [editEmail,setEditEmail]=useState("");
-
 const [editImage,setEditImage]=useState("");
 
 const [editBio,setEditBio]=useState("");
 
 const [editCourseIds,setEditCourseIds]=useState([]);
+
+const [editUploading,setEditUploading]=useState(false);
 
 async function load(){
 
@@ -74,17 +74,41 @@ async function startEdit(teacher){
 
 setEditing(teacher.id);
 
-setEditName(teacher.name);
+setEditName(teacher.name ?? "");
 
-setEditTitle(teacher.title);
+setEditImage(teacher.image_url ?? "");
 
-setEditEmail(teacher.email);
-
-setEditImage(teacher.image_url);
-
-setEditBio(teacher.bio);
+setEditBio(teacher.bio ?? "");
 
 setEditCourseIds(await getTeacherCourseIds(teacher.id));
+
+}
+
+async function handleEditPhoto(event){
+
+const file = event.target.files[0];
+
+if(!file) return;
+
+setEditUploading(true);
+
+const upload = await uploadFile({
+
+bucket:"images",
+
+folder:"teachers",
+
+file
+
+});
+
+setEditUploading(false);
+
+if(upload){
+
+setEditImage(upload.publicUrl);
+
+}
 
 }
 
@@ -111,10 +135,6 @@ editing,
 {
 
 name:editName,
-
-title:editTitle,
-
-email:editEmail,
 
 image_url:editImage,
 
@@ -200,12 +220,6 @@ marginBottom:"10px"
 
 </h3>
 
-<p>
-
-{teacher.title}
-
-</p>
-
 </div>
 
 {
@@ -242,39 +256,53 @@ placeholder="Namn"
 
 <input
 
-value={editTitle}
+type="file"
 
-onChange={e=>setEditTitle(e.target.value)}
+accept="image/*"
 
-placeholder="Titel"
-
-/>
-
-<br/><br/>
-
-<input
-
-value={editEmail}
-
-onChange={e=>setEditEmail(e.target.value)}
-
-placeholder="Email"
+onChange={handleEditPhoto}
 
 />
 
-<br/><br/>
+{
 
-<input
+editUploading &&
 
-value={editImage}
+<p>Laddar upp bild...</p>
 
-onChange={e=>setEditImage(e.target.value)}
+}
 
-placeholder="Bild"
+{
+
+editImage &&
+
+<img
+
+src={editImage}
+
+alt="Förhandsvisning"
+
+style={{
+
+width:60,
+
+height:60,
+
+borderRadius:"50%",
+
+objectFit:"cover",
+
+marginTop:10,
+
+display:"block"
+
+}}
 
 />
 
-<br/><br/>
+}
+
+<br/>
 
 <textarea
 

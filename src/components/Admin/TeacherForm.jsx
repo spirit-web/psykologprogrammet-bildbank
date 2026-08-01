@@ -10,10 +10,6 @@ function TeacherForm({ refresh }) {
 
     const [name, setName] = useState("");
 
-    const [title, setTitle] = useState("");
-
-    const [email, setEmail] = useState("");
-
     const [image, setImage] = useState("");
 
     const [bio, setBio] = useState("");
@@ -82,10 +78,6 @@ function TeacherForm({ refresh }) {
 
             name,
 
-            title,
-
-            email,
-
             image_url: image,
 
             bio
@@ -97,10 +89,6 @@ function TeacherForm({ refresh }) {
             await setTeacherCourses(created.id, courseIds);
 
             setName("");
-
-            setTitle("");
-
-            setEmail("");
 
             setImage("");
 
@@ -133,30 +121,6 @@ function TeacherForm({ refresh }) {
                 value={name}
 
                 onChange={e => setName(e.target.value)}
-
-            />
-
-            <br /><br />
-
-            <input
-
-                placeholder="Titel"
-
-                value={title}
-
-                onChange={e => setTitle(e.target.value)}
-
-            />
-
-            <br /><br />
-
-            <input
-
-                placeholder="Email"
-
-                value={email}
-
-                onChange={e => setEmail(e.target.value)}
 
             />
 

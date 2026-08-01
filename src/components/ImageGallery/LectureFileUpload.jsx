@@ -43,15 +43,21 @@ function LectureFileUpload({ lecture, onUploaded }) {
 
         return (
 
-            <p className="lecture-file-status">
+            <a
 
-                📄 <a href={lecture.pdf_url} target="_blank" rel="noreferrer">
+                className="lecture-pdf-button"
 
-                    Originalmaterial
+                href={lecture.pdf_url}
 
-                </a> uppladdat
+                target="_blank"
 
-            </p>
+                rel="noreferrer"
+
+            >
+
+                📄 Öppna föreläsningens originalmaterial
+
+            </a>
 
         );
 

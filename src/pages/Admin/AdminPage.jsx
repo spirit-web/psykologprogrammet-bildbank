@@ -13,6 +13,7 @@ import ImageList from "../../components/Admin/ImageList";
 
 import SlideList from "../../components/Admin/SlideList";
 import EditSlideModal from "../../components/Admin/EditSlideModal";
+import AdminSlideUpload from "../../components/Admin/AdminSlideUpload";
 
 import TeacherForm from "../../components/Admin/TeacherForm";
 import TeacherList from "../../components/Admin/TeacherList";
@@ -22,6 +23,8 @@ import CategoryList from "../../components/Admin/CategoryList";
 
 import ImportWizard from "../../components/Admin/ImportWizard";
 import EditImageModal from "../../components/Admin/EditImageModal";
+import EditCourseModal from "../../components/Admin/EditCourseModal";
+import EditLectureModal from "../../components/Admin/EditLectureModal";
 
 import {
 
@@ -55,6 +58,10 @@ function AdminPage() {
     const [editingImage, setEditingImage] = useState(null);
 
     const [editingSlide, setEditingSlide] = useState(null);
+
+    const [editingCourse, setEditingCourse] = useState(null);
+
+    const [editingLecture, setEditingLecture] = useState(null);
 
     async function loadAll() {
 
@@ -225,7 +232,7 @@ function AdminPage() {
 
                         onDelete={removeCourse}
 
-                        onEdit={(course)=>console.log(course)}
+                        onEdit={setEditingCourse}
 
                     />
 
@@ -245,7 +252,7 @@ function AdminPage() {
 
                         onDelete={removeLecture}
 
-                        onEdit={(lecture)=>console.log(lecture)}
+                        onEdit={setEditingLecture}
 
                     />
 
@@ -279,9 +286,17 @@ function AdminPage() {
 
                     <p style={{color:"#666"}}>
 
-                        Nya slides läggs till direkt på respektive föreläsningssida (fliken "Originalslides"). Här kan du bläddra, koppla om till rätt föreläsning eller ta bort.
+                        Ladda upp originalslides och koppla direkt till rätt föreläsning, eller gör det via föreläsningssidans flik "Originalslides".
 
                     </p>
+
+                    <AdminSlideUpload
+
+                        lectures={lectures}
+
+                        refresh={loadAll}
+
+                    />
 
                     <SlideList
 
@@ -376,6 +391,40 @@ function AdminPage() {
                 lectures={lectures}
 
                 onClose={() => setEditingSlide(null)}
+
+                onSaved={loadAll}
+
+            />
+
+        }
+
+        {
+
+            editingCourse &&
+
+            <EditCourseModal
+
+                course={editingCourse}
+
+                onClose={() => setEditingCourse(null)}
+
+                onSaved={loadAll}
+
+            />
+
+        }
+
+        {
+
+            editingLecture &&
+
+            <EditLectureModal
+
+                lecture={editingLecture}
+
+                courses={courses}
+
+                onClose={() => setEditingLecture(null)}
 
                 onSaved={loadAll}
 

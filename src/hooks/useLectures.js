@@ -12,6 +12,8 @@ export default function useLectures(courseId){
 
         async function load(){
 
+            setLoading(true);
+
             const data=await getLectures(courseId);
 
             setLectures(data);
@@ -20,7 +22,17 @@ export default function useLectures(courseId){
 
         }
 
-        load();
+        if(courseId){
+
+            load();
+
+        } else {
+
+            setLectures([]);
+
+            setLoading(false);
+
+        }
 
     },[courseId]);
 
