@@ -74,9 +74,38 @@ function AdminPage() {
 
     }
 
+    async function loadAllKeepingScroll() {
+
+        const scrollY = window.scrollY;
+
+        const previousOverflowAnchor = document.documentElement.style.overflowAnchor;
+
+        document.documentElement.style.overflowAnchor = "none";
+
+        await loadAll();
+
+        // Bilder/miniatyrer i listan kan fortsätta ladda och skjuta layouten
+        // efter att datan uppdaterats, så vi återställer scrollpositionen
+        // några gånger under en kort stund istället för bara en gång.
+        const restoreAt = [0, 50, 150, 300, 600];
+
+        restoreAt.forEach(delay => {
+
+            setTimeout(() => window.scrollTo({ top: scrollY }), delay);
+
+        });
+
+        setTimeout(() => {
+
+            document.documentElement.style.overflowAnchor = previousOverflowAnchor;
+
+        }, 700);
+
+    }
+
     useEffect(() => {
 
-        loadAll();
+        loadAllKeepingScroll();
 
     }, []);
 
@@ -84,7 +113,7 @@ function AdminPage() {
 
         await deleteCourse(id);
 
-        loadAll();
+        loadAllKeepingScroll();
 
     }
 
@@ -92,7 +121,7 @@ function AdminPage() {
 
         await deleteLecture(id);
 
-        loadAll();
+        loadAllKeepingScroll();
 
     }
 
@@ -100,7 +129,7 @@ function AdminPage() {
 
         await deleteImage(id);
 
-        loadAll();
+        loadAllKeepingScroll();
 
     }
 
@@ -108,7 +137,7 @@ function AdminPage() {
 
         await deleteSlide(id);
 
-        loadAll();
+        loadAllKeepingScroll();
 
     }
 
@@ -116,7 +145,7 @@ function AdminPage() {
 
         await deleteTeacher(id);
 
-        loadAll();
+        loadAllKeepingScroll();
 
     }
 
@@ -124,7 +153,7 @@ function AdminPage() {
 
         await deleteCategory(id);
 
-        loadAll();
+        loadAllKeepingScroll();
 
     }
 
@@ -374,7 +403,7 @@ function AdminPage() {
 
                 onClose={() => setEditingImage(null)}
 
-                onSaved={loadAll}
+                onSaved={loadAllKeepingScroll}
 
             />
 
@@ -392,7 +421,7 @@ function AdminPage() {
 
                 onClose={() => setEditingSlide(null)}
 
-                onSaved={loadAll}
+                onSaved={loadAllKeepingScroll}
 
             />
 
@@ -408,7 +437,7 @@ function AdminPage() {
 
                 onClose={() => setEditingCourse(null)}
 
-                onSaved={loadAll}
+                onSaved={loadAllKeepingScroll}
 
             />
 
@@ -426,7 +455,7 @@ function AdminPage() {
 
                 onClose={() => setEditingLecture(null)}
 
-                onSaved={loadAll}
+                onSaved={loadAllKeepingScroll}
 
             />
 
