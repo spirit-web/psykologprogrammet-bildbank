@@ -28,11 +28,19 @@ export default function useSlides(lectureId) {
 
     }, [lectureId]);
 
+    function addSlide(slide) {
+
+        setSlides(current => [...current, slide]);
+
+    }
+
     return {
 
         slides,
 
-        loading
+        loading,
+
+        addSlide
 
     };
 

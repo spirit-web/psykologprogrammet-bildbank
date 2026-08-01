@@ -58,9 +58,13 @@ function CoursePage(){
 
                 <Stats course={course}/>
 
-                <CourseSections/>
+                <CourseSections courseId={course.id}/>
 
-                <LectureList course={course}/>
+                <div id="lectures-section">
+
+                    <LectureList course={course}/>
+
+                </div>
 
             </div>
 

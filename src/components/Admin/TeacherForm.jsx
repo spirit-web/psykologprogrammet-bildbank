@@ -1,80 +1,207 @@
 import { useState } from "react";
 
-import {
+import { createTeacher } from "../../services/adminDatabase";
+import { uploadFile } from "../../services/storage/storage";
 
-createTeacher
+function TeacherForm({ refresh }) {
 
-} from "../../services/adminDatabase";
+    const [name, setName] = useState("");
 
-function TeacherForm(){
+    const [title, setTitle] = useState("");
 
-const [name,setName]=useState("");
+    const [email, setEmail] = useState("");
 
-const [image,setImage]=useState("");
+    const [image, setImage] = useState("");
 
-async function save(){
+    const [bio, setBio] = useState("");
 
-const success=
+    const [uploading, setUploading] = useState(false);
 
-await createTeacher({
+    async function handlePhoto(event) {
 
-name,
+        const file = event.target.files[0];
 
-});
+        if (!file) return;
 
-if(success){
+        setUploading(true);
 
-alert("Lärare sparad!");
+        const upload = await uploadFile({
 
-setName("");
+            bucket: "images",
 
-setTitle("");
+            folder: "teachers",
 
-setEmail("");
+            file
 
-setImage("");
+        });
 
-setBio("");
+        setUploading(false);
 
-}
+        if (upload) {
 
-}
+            setImage(upload.publicUrl);
 
-return(
+        }
 
-<div>
+    }
 
-<h2>
+    async function save() {
 
-Ny lärare
+        const success = await createTeacher({
 
-</h2>
+            name,
 
-<input
+            title,
 
-placeholder="Namn"
+            email,
 
-value={name}
+            image_url: image,
 
-onChange={e=>setName(e.target.value)}
+            bio
 
-/>
+        });
 
-<br/><br/>
+        if (success) {
 
-<button
+            alert("Lärare sparad!");
 
-onClick={save}
+            setName("");
 
->
+            setTitle("");
 
-Spara lärare
+            setEmail("");
 
-</button>
+            setImage("");
 
-</div>
+            setBio("");
 
-)
+            refresh?.();
+
+        }
+
+    }
+
+    return (
+
+        <div>
+
+            <h2>
+
+                Ny lärare
+
+            </h2>
+
+            <input
+
+                placeholder="Namn"
+
+                value={name}
+
+                onChange={e => setName(e.target.value)}
+
+            />
+
+            <br /><br />
+
+            <input
+
+                placeholder="Titel"
+
+                value={title}
+
+                onChange={e => setTitle(e.target.value)}
+
+            />
+
+            <br /><br />
+
+            <input
+
+                placeholder="Email"
+
+                value={email}
+
+                onChange={e => setEmail(e.target.value)}
+
+            />
+
+            <br /><br />
+
+            <input
+
+                type="file"
+
+                accept="image/*"
+
+                onChange={handlePhoto}
+
+            />
+
+            {
+
+                uploading &&
+
+                <p>Laddar upp bild...</p>
+
+            }
+
+            {
+
+                image &&
+
+                <img
+
+                    src={image}
+
+                    alt="Förhandsvisning"
+
+                    style={{
+
+                        width: 70,
+
+                        height: 70,
+
+                        borderRadius: "50%",
+
+                        objectFit: "cover",
+
+                        marginTop: 10
+
+                    }}
+
+                />
+
+            }
+
+            <br /><br />
+
+            <textarea
+
+                rows="4"
+
+                placeholder="Kort presentation"
+
+                value={bio}
+
+                onChange={e => setBio(e.target.value)}
+
+            />
+
+            <br /><br />
+
+            <button
+
+                onClick={save}
+
+            >
+
+                Spara lärare
+
+            </button>
+
+        </div>
+
+    )
 
 }
 

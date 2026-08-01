@@ -1,398 +1,116 @@
 import "./ImageGallery.css";
 
-import { useState, useEffect, useRef } from "react";
+import { useState } from "react";
 
-import SlideThumbnail from "../SlideViewer/SlideThumbnail";
+import ImageViewer from "./ImageViewer";
 import QuickImageUpload from "./QuickImageUpload";
+import QuickSlideUpload from "./QuickSlideUpload";
+import LectureFileUpload from "./LectureFileUpload";
 
 import useImages from "../../hooks/useImages";
+import useSlides from "../../hooks/useSlides";
 
 function ImageGallery({ lecture }) {
 
-    const { images, loading, addImage } = useImages(lecture.id);
+    const { images, loading: imagesLoading, addImage } = useImages(lecture.id);
 
-    const [selectedImage, setSelectedImage] = useState(null);
+    const { slides, loading: slidesLoading, addSlide } = useSlides(lecture.id);
 
-    function handleUploaded(newImage) {
+    const [tab, setTab] = useState("images");
 
-        addImage(newImage);
-
-        setSelectedImage(newImage);
-
-    }
-
-    useEffect(() => {
-
-        if (images.length > 0 && !selectedImage) {
-
-            setSelectedImage(images[0]);
-
-        }
-
-    }, [images]);
-
-    const [fullscreen, setFullscreen] = useState(false);
-
-    const [zoom, setZoom] = useState(1);
-
-    const thumbnailRefs = useRef([]);
-
-    const currentIndex = images.findIndex(
-        image => image.id === selectedImage?.id
-    );
-
-    function previousImage() {
-
-        if (currentIndex <= 0) return;
-
-        setSelectedImage(
-            images[currentIndex - 1]
-        );
-
-        setZoom(1);
-
-    }
-
-    function nextImage() {
-
-        if (currentIndex >= images.length - 1) return;
-
-        setSelectedImage(
-            images[currentIndex + 1]
-        );
-
-        setZoom(1);
-
-    }
-
-    function toggleFullscreen() {
-
-        setFullscreen(!fullscreen);
-
-    }
-
-    function toggleZoom() {
-
-        setZoom(
-            zoom === 1 ? 2 : 1
-        );
-
-    }
-
-    function zoomIn() {
-
-        setZoom(
-
-            Math.min(
-                zoom + 0.25,
-                3
-            )
-
-        );
-
-    }
-
-    function zoomOut() {
-
-        setZoom(
-
-            Math.max(
-                zoom - 0.25,
-                0.5
-            )
-
-        );
-
-    }
-
-    function handleWheel(event) {
-
-        event.preventDefault();
-
-        if (event.deltaY < 0) {
-
-            zoomIn();
-
-        } else {
-
-            zoomOut();
-
-        }
-
-    }
-
-    async function downloadImage() {
-
-        if (!selectedImage) return;
-
-        try {
-
-            const response = await fetch(selectedImage.image_url);
-
-            const blob = await response.blob();
-
-            const extension =
-                selectedImage.image_url.split(".").pop().split("?")[0];
-
-            const link = document.createElement("a");
-
-            link.href = URL.createObjectURL(blob);
-
-            link.download = `${selectedImage.title || "bild"}.${extension}`;
-
-            document.body.appendChild(link);
-
-            link.click();
-
-            link.remove();
-
-            URL.revokeObjectURL(link.href);
-
-        } catch (error) {
-
-            window.open(selectedImage.image_url, "_blank");
-
-        }
-
-    }
-
-    useEffect(() => {
-
-        function handleKeyDown(event) {
-
-            if (event.key === "ArrowRight") {
-
-                nextImage();
-
-            }
-
-            if (event.key === "ArrowLeft") {
-
-                previousImage();
-
-            }
-
-            if (event.key === "Escape") {
-
-                setFullscreen(false);
-
-                setZoom(1);
-
-            }
-
-        }
-
-        window.addEventListener(
-            "keydown",
-            handleKeyDown
-        );
-
-        return () => {
-
-            window.removeEventListener(
-                "keydown",
-                handleKeyDown
-            );
-
-        };
-
-    }, [selectedImage]);
-
-    useEffect(() => {
-
-        if (currentIndex >= 0) {
-
-            thumbnailRefs.current[currentIndex]?.scrollIntoView({
-
-                behavior: "smooth",
-
-                block: "nearest",
-
-                inline: "center"
-
-            });
-
-        }
-
-    }, [currentIndex]);
-
-        return (
+    return (
 
         <>
 
-            <h2>
+            <LectureFileUpload lecture={lecture} />
 
-                🖼 Bildgalleri
+            <div className="gallery-tabs">
 
-            </h2>
+                <button
 
-            <QuickImageUpload
+                    className={tab === "images" ? "gallery-tab active" : "gallery-tab"}
 
-                lectureId={lecture.id}
+                    onClick={() => setTab("images")}
 
-                onUploaded={handleUploaded}
+                >
 
-            />
+                    🖼 Minnesbilder
 
-            {
+                </button>
 
-                loading &&
+                <button
 
-                <p>Laddar bilder...</p>
+                    className={tab === "slides" ? "gallery-tab active" : "gallery-tab"}
 
-            }
+                    onClick={() => setTab("slides")}
 
-            {
+                >
 
-                !loading && images.length === 0 &&
+                    📄 Originalslides {slides.length > 0 && `(${slides.length})`}
 
-                <p>Inga bilder har lagts till för den här föreläsningen än.</p>
-
-            }
-
-            {
-
-                selectedImage &&
-
-                <>
-
-                    <div className="image-navigation">
-
-                        <button
-                            onClick={previousImage}
-                        >
-
-                            ⬅ Föregående
-
-                        </button>
-
-                        <span>
-
-                            Bild {currentIndex + 1} av {images.length}
-
-                        </span>
-
-                        <button
-                            onClick={nextImage}
-                        >
-
-                            Nästa ➡
-
-                        </button>
-
-                    </div>
-
-                    <div className="zoom-toolbar">
-
-                        <button
-                            onClick={zoomOut}
-                        >
-
-                            ➖
-
-                        </button>
-
-                        <span>
-
-                            {Math.round(zoom * 100)}%
-
-                        </span>
-
-                        <button
-                            onClick={zoomIn}
-                        >
-
-                            ➕
-
-                        </button>
-
-                        <button
-                            onClick={downloadImage}
-                        >
-
-                            ⬇ Ladda ned bild
-
-                        </button>
-
-                    </div>
-
-                    <img
-
-                        className={
-
-                            fullscreen
-
-                                ? "main-image fullscreen"
-
-                                : "main-image"
-
-                        }
-
-                        src={selectedImage.image_url}
-
-                        alt={selectedImage.title}
-
-                        style={{
-
-                            transform: `scale(${zoom})`,
-
-                            transition: "0.25s"
-
-                        }}
-
-                        onClick={toggleFullscreen}
-
-                        onDoubleClick={toggleZoom}
-
-                        onWheel={handleWheel}
-
-                    />
-
-                </>
-
-            }
-
-            <div className="gallery-grid">
-
-                {
-
-                    images.map((image, index) => (
-
-                        <div
-
-                            key={image.id}
-
-                            ref={(element) =>
-
-                                thumbnailRefs.current[index] = element
-
-                            }
-
-                        >
-
-                            <SlideThumbnail
-
-                                image={image}
-
-                                active={image.id === selectedImage?.id}
-
-                                onClick={() => {
-
-                                    setSelectedImage(image);
-
-                                    setZoom(1);
-
-                                }}
-
-                            />
-
-                        </div>
-
-                    ))
-
-                }
+                </button>
 
             </div>
+
+            {
+
+                tab === "images" &&
+
+                <ImageViewer
+
+                    images={images}
+
+                    loading={imagesLoading}
+
+                    emptyMessage="Inga bilder har lagts till för den här föreläsningen än."
+
+                    uploadSlot={
+
+                        <QuickImageUpload
+
+                            lectureId={lecture.id}
+
+                            onUploaded={addImage}
+
+                        />
+
+                    }
+
+                />
+
+            }
+
+            {
+
+                tab === "slides" &&
+
+                <ImageViewer
+
+                    images={slides}
+
+                    loading={slidesLoading}
+
+                    emptyMessage="Inga originalslides uppladdade för den här föreläsningen än."
+
+                    showActions={false}
+
+                    uploadSlot={
+
+                        <QuickSlideUpload
+
+                            lectureId={lecture.id}
+
+                            nextPageNumber={slides.length}
+
+                            onUploaded={addSlide}
+
+                        />
+
+                    }
+
+                />
+
+            }
 
         </>
 

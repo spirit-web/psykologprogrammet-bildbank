@@ -25,7 +25,7 @@ function Navbar() {
 
       <nav className="navbar-right">
 
-        <button>❤️ Favoriter</button>
+        <Link to="/favoriter" className="nav-button">❤️ Favoriter</Link>
 
         <button>ℹ Om</button>
 
@@ -38,11 +38,11 @@ function Navbar() {
 
         </Link>
 
-        <button className="hippocampus">
+        <Link to="/hippocampus" className="nav-button hippocampus">
 
           🦭 Hippocampus
 
-        </button>
+        </Link>
 
       </nav>
 
