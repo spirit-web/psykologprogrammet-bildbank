@@ -10,9 +10,9 @@ updateTeacher
 
 } from "../../services/adminDatabase";
 
-function TeacherList(){
+function TeacherList({ teachers: teachersProp }){
 
-const [teachers,setTeachers]=useState([]);
+const [teachers,setTeachers]=useState(teachersProp ?? []);
 
 const [editing,setEditing]=useState(null);
 
@@ -40,7 +40,7 @@ useEffect(()=>{
 
 load();
 
-},[]);
+},[teachersProp]);
 
 async function remove(id){
 
@@ -148,7 +148,7 @@ alignItems:"center"
 
 <div>
 
-<img
+{teacher.image_url && <img
 
 src={teacher.image_url}
 
@@ -168,7 +168,7 @@ marginBottom:"10px"
 
 }}
 
-/>
+/>}
 
 <h3>
 
