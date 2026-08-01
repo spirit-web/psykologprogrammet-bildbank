@@ -12,6 +12,10 @@ dist
 dist-ssr
 *.local
 
+# Lokalt källmaterial (bilder/slides/föreläsningar) — laddas upp till Supabase Storage,
+# ska inte ligga i git (stort + innehåller upphovsrättsskyddat kursmaterial).
+Psykolog Verktyg/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json

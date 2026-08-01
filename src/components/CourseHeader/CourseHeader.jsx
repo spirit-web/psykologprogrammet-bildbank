@@ -6,15 +6,18 @@ function CourseHeader({ course }) {
 
         <div className="course-header">
 
-            <img
+            {
+                course.cover &&
+                <img
 
-                src={course.cover}
+                    src={course.cover}
 
-                alt={course.name}
+                    alt={course.name}
 
-                className="course-cover-large"
+                    className="course-cover-large"
 
-            />
+                />
+            }
 
             <div className="course-header-info">
 

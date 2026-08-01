@@ -2,53 +2,61 @@ import "./LectureList.css";
 
 import LectureCard from "./LectureCard";
 
-import { demoLectures } from "../../data/demoLectures";
+import useLectures from "../../hooks/useLectures";
 
-function LectureList({course}){
+function LectureList({ course }) {
 
-return(
+    const {
 
-<>
+        lectures,
 
-<h2>
+        loading,
 
-Föreläsningar
+        bumpImageCount
 
-</h2>
+    } = useLectures(course.id);
 
-<div className="lecture-list">
+    if (loading) {
 
-{
+        return <h2>Laddar föreläsningar...</h2>;
 
-demoLectures
+    }
 
-.filter(
+    return (
 
-lecture=>lecture.courseId===course.id
+        <>
 
-)
+            <h2>
 
-.map(
+                Föreläsningar
 
-lecture=>
+            </h2>
 
-<LectureCard
+            <div className="lecture-list">
 
-key={lecture.id}
+                {
 
-lecture={lecture}
+                    lectures.map(lecture => (
 
-/>
+                        <LectureCard
 
-)
+                            key={lecture.id}
 
-}
+                            lecture={lecture}
 
-</div>
+                            onUploaded={() => bumpImageCount(lecture.id)}
 
-</>
+                        />
 
-)
+                    ))
+
+                }
+
+            </div>
+
+        </>
+
+    );
 
 }
 

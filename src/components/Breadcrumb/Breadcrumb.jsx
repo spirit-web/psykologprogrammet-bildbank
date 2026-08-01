@@ -1,16 +1,50 @@
+import { Link } from "react-router-dom";
+
 import "./Breadcrumb.css";
 
-function Breadcrumb(){
+function Breadcrumb({items}){
 
-    return(
+return(
 
 <div className="breadcrumb">
 
-Psykologprogrammet {" > "} Termin 1 {" > "} Introduktion till psykologi
+<Link to="/">
+
+Psykologprogrammet
+
+</Link>
+
+{
+
+items?.map(item=>(
+
+<span key={item.label}>
+
+{" > "}
+
+{item.link?
+
+<Link to={item.link}>
+
+{item.label}
+
+</Link>
+
+:
+
+item.label
+
+}
+
+</span>
+
+))
+
+}
 
 </div>
 
-    )
+)
 
 }
 

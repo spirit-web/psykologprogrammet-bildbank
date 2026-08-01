@@ -93,3 +93,35 @@ background:#16386B !important;
 color:white;
 
 }
+
+.nav-button{
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:10px 18px;
+
+background:#214c9d;
+
+color:white;
+
+border-radius:10px;
+
+text-decoration:none;
+
+font-weight:600;
+
+transition:.25s;
+
+}
+
+.nav-button:hover{
+
+background:#173b7d;
+
+transform:translateY(-2px);
+
+}

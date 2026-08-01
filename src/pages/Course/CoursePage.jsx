@@ -2,38 +2,67 @@ import "./CoursePage.css";
 
 import { useParams } from "react-router-dom";
 
-import { demoCourses } from "../../data/demoCourses";
-
 import CourseHeader from "../../components/CourseHeader/CourseHeader";
 import Stats from "../../components/Stats/Stats";
 import LectureList from "../../components/LectureList/LectureList";
-import CategoryList from "../../components/CategoryList/CategoryList";
 import CourseSections from "../../components/CourseSections/CourseSections";
+import BackButton from "../../components/BackButton/BackButton";
 
-function CoursePage() {
+import useCourse from "../../hooks/useCourse";
+
+function CoursePage(){
 
     const { id } = useParams();
 
-    const course =
-        demoCourses.find(c => c.id === Number(id));
+    const{
 
-    if (!course) {
+        course,
+
+        loading
+
+    }=useCourse(id);
+
+    if(loading){
+
+        return <h2>Laddar kurs...</h2>;
+
+    }
+
+    if(!course){
 
         return <h2>Kursen hittades inte.</h2>;
 
     }
 
-    return (
+    return(
 
-        <div className="course-page">
+        <div
 
-            <CourseHeader course={course} />
+            style={{
 
-            <Stats course={course} />
+                maxWidth:"1200px",
 
-            <CourseSections />
+                margin:"auto",
 
-            <LectureList course={course} />
+                padding:"40px"
+
+            }}
+
+        >
+
+            <BackButton/>
+
+            <div className="course-page">
+
+                <CourseHeader course={course}/>
+
+                <Stats course={course}/>
+
+                <CourseSections/>
+
+                <LectureList course={course}/>
+
+            </div>
 
         </div>
 

@@ -2,8 +2,8 @@ import { Routes, Route } from "react-router-dom";
 
 import HomePage from "./pages/Home/HomePage";
 import CoursePage from "./pages/Course/CoursePage";
-import AdminPage from "./pages/Admin/AdminPage";
 import LecturePage from "./pages/Lecture/LecturePage";
+import AdminPage from "./pages/Admin/AdminPage";
 
 function App(){
 
@@ -12,27 +12,24 @@ function App(){
         <Routes>
 
             <Route
-
                 path="/"
-
                 element={<HomePage/>}
-
             />
 
             <Route
-
                 path="/course/:id"
-
                 element={<CoursePage/>}
-
             />
 
             <Route
+                path="/lecture/:id"
+                element={<LecturePage/>}
+            />
 
+            <Route
                 path="/admin"
-
-                element={<AdminPage/>}
-
+                element={<AdminPage/>} 
+            
             />
 
         </Routes>

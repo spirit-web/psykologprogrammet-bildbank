@@ -1,55 +1,201 @@
 .gallery-grid{
 
-display:grid;
+display:flex;
 
-grid-template-columns:repeat(auto-fill,minmax(220px,1fr));
+flex-wrap:wrap;
 
-gap:20px;
+gap:16px;
 
 margin-top:25px;
 
 }
 
-.gallery-card{
+.quick-image-upload{
 
-background:white;
-
-padding:12px;
-
-border-radius:18px;
-
-box-shadow:0 10px 25px rgba(0,0,0,.08);
-
-transition:.25s;
-
-cursor:pointer;
+margin:15px 0 25px;
 
 }
 
-.gallery-card:hover{
+.quick-image-upload-button{
 
-transform:translateY(-6px);
+display:inline-block;
 
-}
+background:#eef3ff;
 
-.gallery-card img{
+color:#214c9d;
 
-width:100%;
+border:2px dashed #a9c1ef;
+
+padding:14px 22px;
 
 border-radius:12px;
 
-aspect-ratio:16/10;
-
-object-fit:cover;
-
-}
-
-.gallery-card p{
-
-margin-top:10px;
+cursor:pointer;
 
 font-weight:600;
 
-text-align:center;
+transition:.2s;
+
+}
+
+.quick-image-upload-button:hover{
+
+background:#dbe6ff;
+
+}
+
+.quick-image-upload-button input{
+
+display:none;
+
+}
+
+.image-navigation{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin:25px 0;
+
+}
+
+.image-navigation button{
+
+background:#214c9d;
+
+color:white;
+
+border:none;
+
+padding:12px 18px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+.image-navigation button:hover{
+
+background:#173b7d;
+
+}
+
+.image-navigation span{
+
+font-weight:700;
+
+font-size:17px;
+
+color:#214c9d;
+
+}
+
+.fullscreen{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100vw;
+
+height:100vh;
+
+object-fit:contain;
+
+background:black;
+
+z-index:9999;
+
+padding:40px;
+
+cursor:zoom-out;
+
+}
+
+.zoom-toolbar{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:18px;
+
+margin:15px 0;
+
+}
+
+.zoom-toolbar button{
+
+width:42px;
+
+height:42px;
+
+border:none;
+
+border-radius:10px;
+
+background:#214c9d;
+
+color:white;
+
+font-size:20px;
+
+cursor:pointer;
+
+transition:.2s;
+
+}
+
+.zoom-toolbar button:hover{
+
+background:#173b7d;
+
+}
+
+.zoom-toolbar span{
+
+font-weight:700;
+
+font-size:18px;
+
+color:#214c9d;
+
+}
+
+.main-image{
+
+cursor:zoom-in;
+
+display:block;
+
+max-width:100%;
+
+max-height:70vh;
+
+margin:0 auto;
+
+object-fit:contain;
+
+}
+
+.main-image.fullscreen{
+
+cursor:zoom-out;
+
+}
+
+.thumbnail{
+
+scroll-margin-inline:120px;
 
 }

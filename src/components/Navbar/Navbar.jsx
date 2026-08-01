@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import "./Navbar.css";
 
 function Navbar() {
   return (
@@ -28,7 +29,10 @@ function Navbar() {
 
         <button>ℹ Om</button>
 
-        <Link to="/admin">
+        <Link
+            to="/admin"
+            className="nav-button"
+        >
 
             👤 Admin
 

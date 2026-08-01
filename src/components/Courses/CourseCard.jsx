@@ -13,45 +13,47 @@ function CourseCard({ course }) {
 
       <div
         className="course-card"
-        style={{
-          borderTop: `8px solid ${course.color}`
-        }}
       >
 
-        <img
-          src={course.cover}
-          alt={course.name}
-          className="course-cover"
-        />
+        {
+          course.cover &&
+          <img
+            src={course.cover}
+            alt={course.name}
+            className="course-cover"
+          />
+        }
 
         <div className="course-content">
 
           <h3>{course.name}</h3>
 
           <p className="teacher">
-
             👨‍🏫 {course.teacher}
-
           </p>
 
-          <div className="course-stats">
+          <p>
+            {course.description}
+          </p>
 
-            <span>📄 {course.lectures}</span>
-
-            <span>🖼️ {course.images}</span>
-
-          </div>
+          <p>
+            🎓 {course.credits} hp
+          </p>
 
           <div
             style={{
-              background: "red",
-              color: "white",
-              padding: "12px",
-              textAlign: "center",
-              borderRadius: "8px"
+              background:"#16386B",
+              color:"white",
+              padding:"12px",
+              borderRadius:"10px",
+              textAlign:"center",
+              marginTop:"20px",
+              fontWeight:"600"
             }}
           >
+
             Öppna kurs
+
           </div>
 
         </div>

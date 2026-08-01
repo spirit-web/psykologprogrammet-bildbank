@@ -1,46 +1,62 @@
 import "./LectureSidebar.css";
 
-function LectureSidebar(){
+import { Link } from "react-router-dom";
 
-    return(
+import { demoLectures } from "../../data/demoLectures";
+
+function LectureSidebar() {
+
+    return (
 
         <aside className="lecture-sidebar">
 
             <h2>
 
-                📚 Introduktion
+                📚 Föreläsningar
 
             </h2>
 
-            <button>
+            {
 
-                📑 Föreläsningar
+                demoLectures.map(lecture=>(
 
-            </button>
+                    <Link
 
-            <button>
+                        key={lecture.id}
 
-                🖼 Bilder
+                        to={`/lecture/${lecture.id}`}
 
-            </button>
+                        className="lecture-link"
 
-            <button>
+                    >
 
-                🧠 Begrepp
+                        {lecture.title}
 
-            </button>
+                    </Link>
 
-            <button>
+                ))
 
-                📄 PDF
+            }
 
-            </button>
+            <hr/>
 
-            <button>
+            <Link
+                to="/"
+                className="lecture-link"
+            >
 
-                ⭐ Favoriter
+                🏠 Kurser
 
-            </button>
+            </Link>
+
+            <Link
+                to="/admin"
+                className="lecture-link"
+            >
+
+                👤 Admin
+
+            </Link>
 
         </aside>
 

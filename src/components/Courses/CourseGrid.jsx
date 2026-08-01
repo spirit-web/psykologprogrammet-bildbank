@@ -2,9 +2,22 @@ import "./CourseGrid.css";
 
 import CourseCard from "./CourseCard";
 
-import { demoCourses } from "../../data/demoCourses";
+import useCourses from "../../hooks/useCourses";
 
 function CourseGrid({ selectedTerm }) {
+  const {
+
+  courses,
+
+  loading
+
+  } = useCourses();
+
+  if (loading) {
+
+    return <h2>Laddar kurser...</h2>;
+
+}
 
   return (
 
@@ -12,10 +25,9 @@ function CourseGrid({ selectedTerm }) {
 
       {
 
-        demoCourses
+        courses
 
-          .filter(course => course.term === selectedTerm)
-
+          .filter(course => course.term_id === selectedTerm)
           .map(course => (
 
             <CourseCard

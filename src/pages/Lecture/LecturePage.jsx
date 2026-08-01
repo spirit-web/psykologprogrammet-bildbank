@@ -1,90 +1,112 @@
-import SlideViewer from "../../components/SlideViewer/SlideViewer";
-
-import LectureToolbar from "../../components/LectureToolbar/LectureToolbar";
-
-import LectureSearch from "../../components/LectureSearch/LectureSearch";
-
 import { useParams } from "react-router-dom";
 
-import { demoLectures } from "../../data/demoLectures";
-
+import SlideViewer from "../../components/SlideViewer/SlideViewer";
+import LectureToolbar from "../../components/LectureToolbar/LectureToolbar";
+import LectureSearch from "../../components/LectureSearch/LectureSearch";
 import ImageGallery from "../../components/ImageGallery/ImageGallery";
-
 import LectureSidebar from "../../components/LectureSidebar/LectureSidebar";
+import Breadcrumb from "../../components/Breadcrumb/Breadcrumb";
+import BackButton from "../../components/BackButton/BackButton";
 
-function LecturePage(){
+import useLecture from "../../hooks/useLecture";
 
-const { id } = useParams();
+function LecturePage() {
 
-const lecture=
+    const { id } = useParams();
 
-demoLectures.find(
+    const {
 
-lecture=>lecture.id===Number(id)
+        lecture,
 
-);
+        loading
 
-if(!lecture){
+    } = useLecture(id);
 
-return <h2>Föreläsningen hittades inte.</h2>;
+    if (loading) {
 
-}
+        return <h2>Laddar föreläsning...</h2>;
 
-return(
+    }
 
-<div style={{
+    if (!lecture) {
 
-maxWidth:"1200px",
+        return <h2>Föreläsningen hittades inte.</h2>;
 
-margin:"auto",
+    }
 
-padding:"50px"
+    return (
 
-}}>
+        <div
+            style={{
+                display: "flex",
+                background: "#f7f9fc"
+            }}
+        >
 
-<h1>
+            <LectureSidebar />
 
-📚 {lecture.title}
+            <div
+                style={{
+                    flex: 1,
+                    padding: "40px"
+                }}
+            >
 
-</h1>
+                <BackButton />
 
-<p>
+                <Breadcrumb
+                    items={[
+                        {
+                            label: "Kurs",
+                            link: `/course/${lecture.course_id}`
+                        },
+                        {
+                            label: lecture.title
+                        }
+                    ]}
+                />
 
-👨‍🏫 {lecture.teacher}
+                <h1>
 
-</p>
+                    📚 {lecture.title}
 
-<p>
+                </h1>
 
-📅 {lecture.date}
+                <p>
 
-</p>
+                    👨‍🏫 {lecture.teacher}
 
-<p>
+                </p>
 
-🖼 {lecture.images} bilder
+                <p>
 
-</p>
+                    📅 {lecture.date}
 
-<LectureToolbar/>
+                </p>
 
-<LectureSearch/>
+                <p>
 
-<SlideViewer
+                    🖼 {lecture.images} bilder
 
-image="https://picsum.photos/1200/700"
+                </p>
 
-/>
+                <LectureToolbar />
 
-<ImageGallery
+                <LectureSearch />
 
-lecture={lecture}
+                <SlideViewer
+                    image="https://picsum.photos/1200/700"
+                />
 
-/>
+                <ImageGallery
+                    lecture={lecture}
+                />
 
-</div>
+            </div>
 
-)
+        </div>
+
+    );
 
 }
 
