@@ -127,7 +127,7 @@ function ImageForm({ refresh }) {
 
             options={slides}
 
-            labelField="page_number"
+            labelField="title"
 
             />
 

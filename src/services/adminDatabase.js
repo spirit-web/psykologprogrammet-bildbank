@@ -275,6 +275,28 @@ export async function updateSlide(id, updates) {
 
 }
 
+export async function syncImagesLectureFromSlide(slideId, lectureId) {
+
+    const { error } = await supabase
+
+        .from("images")
+
+        .update({ lecture_id: lectureId })
+
+        .eq("slide_id", slideId);
+
+    if (error) {
+
+        console.error(error);
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
 export async function deleteSlide(id) {
 
     const { error } = await supabase
@@ -310,7 +332,7 @@ export async function getAllImages() {
         .select(`
             *,
             lectures(title),
-            original_slides(page_number),
+            original_slides(title, page_number),
             categories(name)
         `)
 
@@ -600,7 +622,7 @@ export async function getAllCategories(){
 
         .from("categories")
 
-        .select("*")
+        .select("*, courses(name)")
 
         .order("sort_order");
 

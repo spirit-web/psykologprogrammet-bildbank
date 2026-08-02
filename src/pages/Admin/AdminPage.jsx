@@ -367,15 +367,17 @@ function AdminPage() {
 
                 <>
 
-                    <CategoryForm refresh={loadAll} />
+                    <CategoryForm refresh={loadAllKeepingScroll} />
 
                     <CategoryList
 
                         categories={categories}
 
+                        courses={courses}
+
                         onDelete={removeCategory}
 
-                        onEdit={(category)=>console.log(category)}
+                        refresh={loadAllKeepingScroll}
 
                     />
 

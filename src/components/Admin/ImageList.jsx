@@ -123,6 +123,12 @@ alignItems:"center"
 
 </p>
 
+<p>
+
+📄 {image.original_slides?.title ?? "Ingen koppling till slide"}
+
+</p>
+
 </div>
 
 </div>

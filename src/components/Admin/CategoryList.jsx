@@ -1,60 +1,89 @@
-import AdminSection from "./AdminSection";
+import { useState } from "react";
 
-function CourseList({
+import AdminSection from "./AdminSection";
+import AdminSelect from "./AdminSelect";
+
+import { updateCategory } from "../../services/adminDatabase";
+
+function CategoryList({
+
+    categories = [],
 
     courses = [],
 
     onDelete,
 
-    onEdit
+    refresh
 
 }) {
 
+    const [editingId, setEditingId] = useState(null);
+
+    const [editName, setEditName] = useState("");
+
+    const [editIcon, setEditIcon] = useState("");
+
+    const [editCourseId, setEditCourseId] = useState("");
+
+    function startEdit(category) {
+
+        setEditingId(category.id);
+
+        setEditName(category.name ?? "");
+
+        setEditIcon(category.icon ?? "");
+
+        setEditCourseId(category.course_id ?? "");
+
+    }
+
+    async function saveEdit() {
+
+        await updateCategory(editingId, {
+
+            name: editName,
+
+            icon: editIcon,
+
+            course_id: editCourseId ? Number(editCourseId) : null
+
+        });
+
+        setEditingId(null);
+
+        refresh?.();
+
+    }
+
     return (
 
-        <AdminSection
-
-            title="📚 Alla kurser"
-
-        >
+        <AdminSection title="🧠 Alla kategorier">
 
             {
 
-                courses.length === 0 && (
+                categories.length === 0 &&
 
-                    <p>
-
-                        Inga kurser ännu.
-
-                    </p>
-
-                )
+                <p>Inga kategorier ännu.</p>
 
             }
 
             {
 
-                courses.map(course => (
+                categories.map(category => (
 
                     <div
 
-                        key={course.id}
+                        key={category.id}
 
                         style={{
 
                             border: "1px solid #ddd",
 
-                            borderRadius: "14px",
+                            borderRadius: 14,
 
-                            padding: "25px",
+                            padding: 20,
 
-                            marginBottom: "20px",
-
-                            display: "flex",
-
-                            justifyContent: "space-between",
-
-                            alignItems: "center",
+                            marginBottom: 15,
 
                             background: "#fff"
 
@@ -62,75 +91,117 @@ function CourseList({
 
                     >
 
-                        <div>
-
-                            <h3>
-
-                                {course.name}
-
-                            </h3>
-
-                            <p>
-
-                                👨‍🏫 {course.teacher}
-
-                            </p>
-
-                            <p>
-
-                                🎓 Termin {course.term_id}
-
-                            </p>
-
-                            <p>
-
-                                {course.credits} hp
-
-                            </p>
-
-                        </div>
-
                         <div
 
                             style={{
 
                                 display: "flex",
 
-                                gap: "12px"
+                                justifyContent: "space-between",
+
+                                alignItems: "center"
 
                             }}
 
                         >
 
-                            <button
+                            <div>
 
-                                onClick={() =>
+                                <h3>
 
-                                    onEdit(course)
+                                    {category.icon} {category.name}
 
-                                }
+                                </h3>
 
-                            >
+                                <p>
 
-                                ✏️ Redigera
+                                    📚 {category.courses?.name ?? "Ingen kurs kopplad"}
 
-                            </button>
+                                </p>
 
-                            <button
+                            </div>
 
-                                onClick={() =>
+                            <div style={{ display: "flex", gap: 10 }}>
 
-                                    onDelete(course.id)
+                                <button onClick={() => startEdit(category)}>
 
-                                }
+                                    ✏️
 
-                            >
+                                </button>
 
-                                🗑 Ta bort
+                                <button onClick={() => onDelete(category.id)}>
 
-                            </button>
+                                    🗑
+
+                                </button>
+
+                            </div>
 
                         </div>
+
+                        {
+
+                            editingId === category.id &&
+
+                            <div
+
+                                style={{
+
+                                    marginTop: 15,
+
+                                    padding: 15,
+
+                                    background: "#fafafa",
+
+                                    borderRadius: 10
+
+                                }}
+
+                            >
+
+                                <input
+
+                                    value={editName}
+
+                                    onChange={e => setEditName(e.target.value)}
+
+                                    placeholder="Namn"
+
+                                    style={{ width: "100%", padding: 10, marginBottom: 10, borderRadius: 8, border: "1px solid #ddd" }}
+
+                                />
+
+                                <input
+
+                                    value={editIcon}
+
+                                    onChange={e => setEditIcon(e.target.value)}
+
+                                    placeholder="Ikon"
+
+                                    style={{ width: 80, padding: 10, marginBottom: 10, marginRight: 10, borderRadius: 8, border: "1px solid #ddd" }}
+
+                                />
+
+                                <AdminSelect
+
+                                    label="Kurs"
+
+                                    value={editCourseId}
+
+                                    onChange={e => setEditCourseId(e.target.value)}
+
+                                    options={courses}
+
+                                />
+
+                                <button onClick={saveEdit}>💾 Spara</button>
+
+                                <button onClick={() => setEditingId(null)} style={{ marginLeft: 10 }}>Avbryt</button>
+
+                            </div>
+
+                        }
 
                     </div>
 
@@ -144,4 +215,4 @@ function CourseList({
 
 }
 
-export default CourseList;
+export default CategoryList;

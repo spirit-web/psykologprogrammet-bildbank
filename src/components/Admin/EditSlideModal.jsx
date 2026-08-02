@@ -4,7 +4,7 @@ import AdminInput from "./AdminInput";
 import AdminSelect from "./AdminSelect";
 import AdminButton from "./AdminButton.jsx";
 
-import { updateSlide } from "../../services/adminDatabase";
+import { updateSlide, syncImagesLectureFromSlide } from "../../services/adminDatabase";
 
 function EditSlideModal({ slide, lectures, onClose, onSaved }) {
 
@@ -30,13 +30,17 @@ function EditSlideModal({ slide, lectures, onClose, onSaved }) {
 
         });
 
-        setSaving(false);
-
         if (!result) {
+
+            setSaving(false);
 
             return;
 
         }
+
+        await syncImagesLectureFromSlide(slide.id, result.lecture_id);
+
+        setSaving(false);
 
         onSaved?.();
 
