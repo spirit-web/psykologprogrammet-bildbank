@@ -125,3 +125,51 @@ background:#173b7d;
 transform:translateY(-2px);
 
 }
+
+.music-player{
+
+display:flex;
+
+align-items:center;
+
+gap:4px;
+
+background:#f2f5fb;
+
+border-radius:20px;
+
+padding:4px;
+
+}
+
+.music-play-button{
+
+background:#214c9d !important;
+
+color:white;
+
+border-radius:50% !important;
+
+width:34px;
+
+height:34px;
+
+padding:0 !important;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:14px !important;
+
+}
+
+.music-track-button{
+
+font-size:13px !important;
+
+padding:6px 12px !important;
+
+}

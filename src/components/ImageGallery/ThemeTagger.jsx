@@ -96,9 +96,9 @@ function ThemeTagger({ imageId }) {
 
         <div className="theme-tagger">
 
-            <button onClick={() => setOpen(!open)}>
+            <button onClick={() => setOpen(!open)} title="Teman">
 
-                🏷️ Teman{taggedIds.length > 0 ? ` (${taggedIds.length})` : ""}
+                🏷️{taggedIds.length > 0 ? ` ${taggedIds.length}` : ""}
 
             </button>
 

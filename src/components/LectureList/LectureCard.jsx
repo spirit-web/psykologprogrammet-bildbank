@@ -40,13 +40,13 @@ function LectureCard({ lecture, onUploaded }) {
 
         width:"100%",
 
-        height:120,
+        height:70,
 
         objectFit:"cover",
 
-        borderRadius:10,
+        borderRadius:8,
 
-        marginBottom:12
+        marginBottom:8
 
         }}
 
@@ -67,12 +67,6 @@ function LectureCard({ lecture, onUploaded }) {
         <p>👨‍🏫 {lecture.teacher}</p>
 
         }
-
-        <p>
-
-        🖼️ {lecture.images} bilder
-
-        </p>
 
         <button>
 

@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import "./Navbar.css";
+import MusicPlayer from "./MusicPlayer";
 
 function Navbar() {
   return (
@@ -27,7 +28,7 @@ function Navbar() {
 
         <Link to="/favoriter" className="nav-button">❤️ Favoriter</Link>
 
-        <button>ℹ Om</button>
+        <MusicPlayer />
 
         <Link
             to="/admin"

@@ -117,6 +117,12 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
     function handleWheel(event) {
 
+        if (!event.ctrlKey && !event.metaKey) {
+
+            return;
+
+        }
+
         event.preventDefault();
 
         if (event.deltaY < 0) {
@@ -316,8 +322,8 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
                         <button onClick={zoomIn}>➕</button>
 
-                        <button onClick={downloadImage}>
-                            ⬇ Ladda ned bild
+                        <button onClick={downloadImage} title="Ladda ned bild">
+                            ⬇
                         </button>
 
                         {
@@ -326,8 +332,9 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
                                 <button
                                     onClick={() => toggleFavorite(selectedImage.id)}
                                     className={isFavorite(selectedImage.id) ? "favorite-active" : ""}
+                                    title="Favorit"
                                 >
-                                    {isFavorite(selectedImage.id) ? "⭐ Favorit" : "☆ Favorit"}
+                                    {isFavorite(selectedImage.id) ? "⭐" : "☆"}
                                 </button>
 
                                 <ThemeTagger imageId={selectedImage.id} />
