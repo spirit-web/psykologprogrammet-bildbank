@@ -4,6 +4,7 @@ import AdminSection from "./AdminSection";
 import AdminSelect from "./AdminSelect";
 
 import { updateCategory } from "../../services/adminDatabase";
+import EmojiPicker from "./EmojiPicker";
 
 function CategoryList({
 
@@ -171,17 +172,7 @@ function CategoryList({
 
                                 />
 
-                                <input
-
-                                    value={editIcon}
-
-                                    onChange={e => setEditIcon(e.target.value)}
-
-                                    placeholder="Ikon"
-
-                                    style={{ width: 80, padding: 10, marginBottom: 10, marginRight: 10, borderRadius: 8, border: "1px solid #ddd" }}
-
-                                />
+                                <EmojiPicker value={editIcon} onChange={setEditIcon} />
 
                                 <AdminSelect
 

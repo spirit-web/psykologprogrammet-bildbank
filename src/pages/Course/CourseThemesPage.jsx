@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 
 import { useParams, useSearchParams } from "react-router-dom";
 
-import Navbar from "../../components/Navbar/Navbar";
 import BackButton from "../../components/BackButton/BackButton";
 import ImageViewer from "../../components/ImageGallery/ImageViewer";
 import "../../components/CourseSections/CourseSections.css";
@@ -81,9 +80,6 @@ function CourseThemesPage() {
     return (
 
         <>
-
-            <Navbar />
-
             <div style={{ maxWidth: "1200px", margin: "auto", padding: "40px" }}>
 
                 <BackButton />

@@ -7,14 +7,7 @@ import AdminButton from "./AdminButton.jsx";
 
 import { createCategory } from "../../services/adminDatabase";
 import useAdminData from "../../hooks/useAdminData";
-
-const ICON_CHOICES = [
-
-    "🧠", "📚", "❤️", "⭐", "😨", "😳", "🧩", "😴", "🔥", "🌸",
-
-    "🛠️", "🕯️", "👥", "📖", "🌊", "🧬", "💡", "🎯", "🔑", "🧭"
-
-];
+import EmojiPicker from "./EmojiPicker";
 
 function CategoryForm({ refresh }) {
 
@@ -96,77 +89,7 @@ function CategoryForm({ refresh }) {
 
             />
 
-            <label style={{ display: "block", fontWeight: 600, margin: "0 0 8px" }}>
-
-                Ikon
-
-            </label>
-
-            <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 15 }}>
-
-                {
-
-                    ICON_CHOICES.map(choice => (
-
-                        <button
-
-                            key={choice}
-
-                            type="button"
-
-                            onClick={() => setIcon(choice)}
-
-                            style={{
-
-                                fontSize: 22,
-
-                                width: 44,
-
-                                height: 44,
-
-                                borderRadius: 10,
-
-                                border: icon === choice ? "2px solid #214c9d" : "1px solid #ddd",
-
-                                background: icon === choice ? "#eef3ff" : "white",
-
-                                cursor: "pointer"
-
-                            }}
-
-                        >
-
-                            {choice}
-
-                        </button>
-
-                    ))
-
-                }
-
-                <input
-
-                    value={icon}
-
-                    onChange={event => setIcon(event.target.value)}
-
-                    placeholder="eller egen emoji"
-
-                    style={{
-
-                        width: 130,
-
-                        padding: "0 12px",
-
-                        borderRadius: 10,
-
-                        border: "1px solid #ddd"
-
-                    }}
-
-                />
-
-            </div>
+            <EmojiPicker value={icon} onChange={setIcon} />
 
             <AdminButton onClick={saveCategory}>
 

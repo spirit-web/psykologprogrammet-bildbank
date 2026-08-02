@@ -686,6 +686,14 @@ export async function updateCategory(id, category){
 
 export async function deleteCategory(id){
 
+    await supabase
+
+        .from("images")
+
+        .update({ category_id: null })
+
+        .eq("category_id", id);
+
     const { error } = await supabase
 
         .from("categories")

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import AdminInput from "./AdminInput";
 import AdminTextarea from "./AdminTextarea";
@@ -6,6 +6,7 @@ import AdminSelect from "./AdminSelect";
 import AdminButton from "./AdminButton.jsx";
 
 import { updateImage } from "../../services/adminDatabase";
+import { getThemes, getThemesForImage, tagImage, untagImage } from "../../services/themes";
 
 function EditImageModal({ image, lectures, categories, slides, onClose, onSaved }) {
 
@@ -21,11 +22,55 @@ function EditImageModal({ image, lectures, categories, slides, onClose, onSaved 
 
     const [saving, setSaving] = useState(false);
 
+    const [allThemes, setAllThemes] = useState([]);
+
+    const [taggedThemeIds, setTaggedThemeIds] = useState([]);
+
     const slidesForLecture = slides.filter(
 
         slide => !lectureId || slide.lecture_id === Number(lectureId)
 
     );
+
+    useEffect(() => {
+
+        async function loadThemeData() {
+
+            const [themes, tagged] = await Promise.all([
+
+                getThemes(),
+
+                getThemesForImage(image.id)
+
+            ]);
+
+            setAllThemes(themes);
+
+            setTaggedThemeIds(tagged.map(theme => theme.id));
+
+        }
+
+        loadThemeData();
+
+    }, [image.id]);
+
+    async function toggleTheme(themeId) {
+
+        if (taggedThemeIds.includes(themeId)) {
+
+            setTaggedThemeIds(current => current.filter(id => id !== themeId));
+
+            await untagImage(image.id, themeId);
+
+        } else {
+
+            setTaggedThemeIds(current => [...current, themeId]);
+
+            await tagImage(image.id, themeId);
+
+        }
+
+    }
 
     async function save() {
 
@@ -191,7 +236,7 @@ function EditImageModal({ image, lectures, categories, slides, onClose, onSaved 
 
                 <AdminSelect
 
-                    label="Kategori/Tema"
+                    label="Kategori (kursspecifik, en åt gången)"
 
                     value={categoryId}
 
@@ -200,6 +245,56 @@ function EditImageModal({ image, lectures, categories, slides, onClose, onSaved 
                     options={categories}
 
                 />
+
+                <label style={{ display: "block", fontWeight: 600, margin: "15px 0 8px" }}>
+
+                    Teman (Hippocampus — flera samtidigt)
+
+                </label>
+
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 8, marginBottom: 15 }}>
+
+                    {
+
+                        allThemes.map(theme => (
+
+                            <button
+
+                                type="button"
+
+                                key={theme.id}
+
+                                onClick={() => toggleTheme(theme.id)}
+
+                                style={{
+
+                                    padding: "8px 14px",
+
+                                    borderRadius: 20,
+
+                                    border: "none",
+
+                                    cursor: "pointer",
+
+                                    fontSize: 13,
+
+                                    background: taggedThemeIds.includes(theme.id) ? "#214c9d" : "#eee",
+
+                                    color: taggedThemeIds.includes(theme.id) ? "white" : "#333"
+
+                                }}
+
+                            >
+
+                                {theme.icon} {theme.name}
+
+                            </button>
+
+                        ))
+
+                    }
+
+                </div>
 
                 <AdminTextarea
 

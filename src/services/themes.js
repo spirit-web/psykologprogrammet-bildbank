@@ -156,13 +156,13 @@ export async function getCourseImagesByTheme(courseId, themeId) {
 
 }
 
-export async function createTheme(name) {
+export async function createTheme(name, icon) {
 
     const { data, error } = await supabase
 
         .from("themes")
 
-        .insert({ name })
+        .insert(icon ? { name, icon } : { name })
 
         .select()
 

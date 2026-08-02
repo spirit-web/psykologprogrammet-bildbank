@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 
-import Navbar from "../../components/Navbar/Navbar";
 import BackButton from "../../components/BackButton/BackButton";
 import ImageViewer from "../../components/ImageGallery/ImageViewer";
+import EmojiPicker from "../../components/Admin/EmojiPicker";
 import "../../components/CourseSections/CourseSections.css";
 
 import {
@@ -22,6 +22,8 @@ function HippocampusPage() {
     const [loadingImages, setLoadingImages] = useState(false);
 
     const [newThemeName, setNewThemeName] = useState("");
+
+    const [newThemeIcon, setNewThemeIcon] = useState("🧠");
 
     useEffect(() => {
 
@@ -57,13 +59,15 @@ function HippocampusPage() {
 
         if (!name) return;
 
-        const created = await createTheme(name);
+        const created = await createTheme(name, newThemeIcon);
 
         if (created) {
 
             setThemes(current => [...current, created]);
 
             setNewThemeName("");
+
+            setNewThemeIcon("🧠");
 
         }
 
@@ -72,9 +76,6 @@ function HippocampusPage() {
     return (
 
         <>
-
-            <Navbar />
-
             <div style={{ maxWidth: "1200px", margin: "auto", padding: "40px" }}>
 
                 <BackButton />
@@ -119,37 +120,43 @@ function HippocampusPage() {
 
                         </div>
 
-                        <div style={{ display: "flex", gap: 10, marginTop: 25, maxWidth: 400 }}>
+                        <div style={{ maxWidth: 500, marginTop: 25 }}>
 
-                            <input
+                            <EmojiPicker value={newThemeIcon} onChange={setNewThemeIcon} />
 
-                                placeholder="+ Nytt tema"
+                            <div style={{ display: "flex", gap: 10 }}>
 
-                                value={newThemeName}
+                                <input
 
-                                onChange={event => setNewThemeName(event.target.value)}
+                                    placeholder="+ Nytt tema"
 
-                                onKeyDown={event => {
+                                    value={newThemeName}
 
-                                    if (event.key === "Enter") addTheme();
+                                    onChange={event => setNewThemeName(event.target.value)}
 
-                                }}
+                                    onKeyDown={event => {
 
-                                style={{ flex: 1, padding: 12, borderRadius: 10, border: "1px solid #ddd" }}
+                                        if (event.key === "Enter") addTheme();
 
-                            />
+                                    }}
 
-                            <button
+                                    style={{ flex: 1, padding: 12, borderRadius: 10, border: "1px solid #ddd" }}
 
-                                onClick={addTheme}
+                                />
 
-                                style={{ background: "#214c9d", color: "white", border: "none", borderRadius: 10, padding: "0 20px", cursor: "pointer" }}
+                                <button
 
-                            >
+                                    onClick={addTheme}
 
-                                Lägg till tema
+                                    style={{ background: "#214c9d", color: "white", border: "none", borderRadius: 10, padding: "0 20px", cursor: "pointer" }}
 
-                            </button>
+                                >
+
+                                    Lägg till tema
+
+                                </button>
+
+                            </div>
 
                         </div>
 

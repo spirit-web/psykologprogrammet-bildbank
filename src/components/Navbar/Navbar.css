@@ -30,6 +30,16 @@ gap:15px;
 
 }
 
+.navbar-home-link{
+
+text-decoration:none;
+
+color:inherit;
+
+cursor:pointer;
+
+}
+
 .logo{
 
 font-size:42px;

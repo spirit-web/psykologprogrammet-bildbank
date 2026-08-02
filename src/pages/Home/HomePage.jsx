@@ -1,6 +1,5 @@
 import { useState } from "react";
 
-import Navbar from "../../components/Navbar/Navbar";
 import Hero from "../../components/Hero/Hero";
 import SearchBar from "../../components/Search/SearchBar";
 import Timeline from "../../components/Timeline/Timeline";
@@ -13,8 +12,6 @@ function HomePage() {
     return (
 
         <>
-
-            <Navbar />
 
             <Hero />
 

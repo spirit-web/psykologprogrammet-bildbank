@@ -1,5 +1,7 @@
 import { Routes, Route } from "react-router-dom";
 
+import Navbar from "./components/Navbar/Navbar";
+
 import HomePage from "./pages/Home/HomePage";
 import CoursePage from "./pages/Course/CoursePage";
 import CourseImagesPage from "./pages/Course/CourseImagesPage";
@@ -13,6 +15,10 @@ import HippocampusPage from "./pages/Hippocampus/HippocampusPage";
 function App(){
 
     return(
+
+        <>
+
+        <Navbar/>
 
         <Routes>
 
@@ -63,6 +69,8 @@ function App(){
             />
 
         </Routes>
+
+        </>
 
     )
 

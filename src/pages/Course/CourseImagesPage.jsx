@@ -1,6 +1,5 @@
 import { useParams } from "react-router-dom";
 
-import Navbar from "../../components/Navbar/Navbar";
 import BackButton from "../../components/BackButton/BackButton";
 import ImageViewer from "../../components/ImageGallery/ImageViewer";
 
@@ -18,9 +17,6 @@ function CourseImagesPage() {
     return (
 
         <>
-
-            <Navbar />
-
             <div style={{ maxWidth: "1200px", margin: "auto", padding: "40px" }}>
 
                 <BackButton />

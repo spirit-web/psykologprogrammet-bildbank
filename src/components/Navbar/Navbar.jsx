@@ -6,7 +6,7 @@ function Navbar() {
   return (
     <header className="navbar">
 
-      <div className="navbar-left">
+      <Link to="/" className="navbar-left navbar-home-link">
 
         <div className="logo">
           🧠
@@ -17,18 +17,16 @@ function Navbar() {
           <h1>Psykopedia</h1>
 
           <span>
-            AI-driven kunskapsportal
+            Psykologprogrammets viktigaste koncept
           </span>
 
         </div>
 
-      </div>
+      </Link>
 
       <nav className="navbar-right">
 
         <Link to="/favoriter" className="nav-button">❤️ Favoriter</Link>
-
-        <MusicPlayer />
 
         <Link
             to="/admin"
@@ -44,6 +42,8 @@ function Navbar() {
           🦭 Hippocampus
 
         </Link>
+
+        <MusicPlayer />
 
       </nav>
 
