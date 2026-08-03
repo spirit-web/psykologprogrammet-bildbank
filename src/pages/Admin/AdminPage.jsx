@@ -21,6 +21,9 @@ import TeacherList from "../../components/Admin/TeacherList";
 import CategoryForm from "../../components/Admin/CategoryForm";
 import CategoryList from "../../components/Admin/CategoryList";
 
+import CaseForm from "../../components/Admin/CaseForm";
+import CaseList from "../../components/Admin/CaseList";
+
 import ImportWizard from "../../components/Admin/ImportWizard";
 import EditImageModal from "../../components/Admin/EditImageModal";
 import EditCourseModal from "../../components/Admin/EditCourseModal";
@@ -43,6 +46,7 @@ import {
 } from "../../services/adminDatabase";
 
 import { getThemes, deleteTheme } from "../../services/themes";
+import { getCases, deleteCase } from "../../services/cases";
 
 function AdminPage() {
 
@@ -54,6 +58,7 @@ function AdminPage() {
     const [slides, setSlides] = useState([]);
     const [teachers, setTeachers] = useState([]);
     const [categories, setCategories] = useState([]);
+    const [cases, setCases] = useState([]);
 
     const [editingImage, setEditingImage] = useState(null);
 
@@ -71,6 +76,7 @@ function AdminPage() {
         setSlides(await getAllSlides());
         setTeachers(await getAllTeachers());
         setCategories(await getThemes());
+        setCases(await getCases());
 
     }
 
@@ -152,6 +158,14 @@ function AdminPage() {
     async function removeCategory(id) {
 
         await deleteTheme(id);
+
+        loadAllKeepingScroll();
+
+    }
+
+    async function removeCase(id) {
+
+        await deleteCase(id);
 
         loadAllKeepingScroll();
 
@@ -244,6 +258,12 @@ function AdminPage() {
                 <button onClick={() => setSelectedPage("categories")}>
 
                     🧠 Kategorier
+
+                </button>
+
+                <button onClick={() => setSelectedPage("cases")}>
+
+                    🩺 Fall
 
                 </button>
 
@@ -376,6 +396,28 @@ function AdminPage() {
                         courses={courses}
 
                         onDelete={removeCategory}
+
+                        refresh={loadAllKeepingScroll}
+
+                    />
+
+                </>
+
+            )}
+
+            {selectedPage === "cases" && (
+
+                <>
+
+                    <CaseForm refresh={loadAllKeepingScroll} />
+
+                    <CaseList
+
+                        cases={cases}
+
+                        images={images}
+
+                        onDelete={removeCase}
 
                         refresh={loadAllKeepingScroll}
 

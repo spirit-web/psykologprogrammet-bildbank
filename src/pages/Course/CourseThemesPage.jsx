@@ -108,23 +108,7 @@ function CourseThemesPage() {
 
                             }
 
-                            <div style={{ textAlign: "left" }}>
-
-                                <strong>{image.title}</strong>
-
-                                {
-
-                                    image.description &&
-
-                                    <p style={{ margin: "2px 0 0", color: "#888" }}>
-
-                                        {image.description}
-
-                                    </p>
-
-                                }
-
-                            </div>
+                            <strong>{image.title}</strong>
 
                         </li>
 

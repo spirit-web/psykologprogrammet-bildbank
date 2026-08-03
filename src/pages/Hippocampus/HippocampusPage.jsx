@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import BackButton from "../../components/BackButton/BackButton";
 import ImageViewer from "../../components/ImageGallery/ImageViewer";
 import EmojiPicker from "../../components/Admin/EmojiPicker";
+import HippocampusCases from "./HippocampusCases";
 import "../../components/CourseSections/CourseSections.css";
 
 import {
@@ -24,6 +25,8 @@ function HippocampusPage() {
     const [newThemeName, setNewThemeName] = useState("");
 
     const [newThemeIcon, setNewThemeIcon] = useState("🧠");
+
+    const [view, setView] = useState("categories");
 
     useEffect(() => {
 
@@ -98,9 +101,29 @@ function HippocampusPage() {
 
                 <p>Bläddra bilder per kategori, oavsett vilken kurs de kommer ifrån.</p>
 
+                <div className="gallery-tabs" style={{ marginBottom: 25 }}>
+
+                    <button
+                        className={view === "categories" ? "gallery-tab active" : "gallery-tab"}
+                        onClick={() => setView("categories")}
+                    >
+                        🧠 Kategorier
+                    </button>
+
+                    <button
+                        className={view === "cases" ? "gallery-tab active" : "gallery-tab"}
+                        onClick={() => setView("cases")}
+                    >
+                        🩺 Fall
+                    </button>
+
+                </div>
+
+                {view === "cases" && <HippocampusCases />}
+
                 {
 
-                    !selectedTheme &&
+                    view === "categories" && !selectedTheme &&
 
                     <>
 
@@ -180,7 +203,7 @@ function HippocampusPage() {
 
                 {
 
-                    selectedTheme &&
+                    view === "categories" && selectedTheme &&
 
                     <>
 
