@@ -24,11 +24,11 @@ function EditImageModal({ image, lectures, slides, onClose, onSaved }) {
 
     const [taggedThemeIds, setTaggedThemeIds] = useState([]);
 
-    const slidesForLecture = slides.filter(
+    const slidesForLecture = slides
 
-        slide => !lectureId || slide.lecture_id === Number(lectureId)
+        .filter(slide => !lectureId || slide.lecture_id === Number(lectureId))
 
-    );
+        .sort((a, b) => (a.title || "").localeCompare(b.title || "", "sv"));
 
     useEffect(() => {
 

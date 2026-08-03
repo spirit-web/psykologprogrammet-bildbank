@@ -53,6 +53,20 @@ function HippocampusPage() {
 
     }
 
+    const themeIndex = selectedTheme
+
+        ? themes.findIndex(theme => theme.id === selectedTheme.id)
+
+        : -1;
+
+    function openThemeAt(index) {
+
+        if (index < 0 || index >= themes.length) return;
+
+        openTheme(themes[index]);
+
+    }
+
     async function addTheme() {
 
         const name = newThemeName.trim();
@@ -182,7 +196,35 @@ function HippocampusPage() {
 
                         </button>
 
-                        <h2>{selectedTheme.icon} {selectedTheme.name}</h2>
+                        <div className="image-navigation">
+
+                            <button
+
+                                onClick={() => openThemeAt(themeIndex - 1)}
+
+                                disabled={themeIndex <= 0}
+
+                            >
+
+                                ⬅ Föregående kategori
+
+                            </button>
+
+                            <span>{selectedTheme.icon} {selectedTheme.name}</span>
+
+                            <button
+
+                                onClick={() => openThemeAt(themeIndex + 1)}
+
+                                disabled={themeIndex === -1 || themeIndex >= themes.length - 1}
+
+                            >
+
+                                Nästa kategori ➡
+
+                            </button>
+
+                        </div>
 
                         <ImageViewer
 

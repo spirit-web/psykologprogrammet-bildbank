@@ -4,9 +4,13 @@ const TRACKS = {
 
     original: { label: "Original", src: "/audio/pavlovs-hundar-original.mp3" },
 
-    remix: { label: "Remix", src: "/audio/pavlovs-hundar-remix.mp3" }
+    remix: { label: "Remix", src: "/audio/pavlovs-hundar-remix.mp3" },
+
+    relax: { label: "Relax", src: "/audio/pavlovs-hundar-relax.mp3" }
 
 };
+
+const TRACK_ORDER = Object.keys(TRACKS);
 
 function MusicPlayer() {
 
@@ -18,7 +22,7 @@ function MusicPlayer() {
 
     function toggleTrack() {
 
-        const next = track === "original" ? "remix" : "original";
+        const next = TRACK_ORDER[(TRACK_ORDER.indexOf(track) + 1) % TRACK_ORDER.length];
 
         const wasPlaying = playing;
 

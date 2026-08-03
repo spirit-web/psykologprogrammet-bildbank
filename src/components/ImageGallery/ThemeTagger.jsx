@@ -130,9 +130,11 @@ function ThemeTagger({ imageId }) {
 
                                             onClick={() => toggle(theme.id)}
 
+                                            title={theme.name}
+
                                         >
 
-                                            {theme.icon} {theme.name}
+                                            {theme.icon}
 
                                         </button>
 

@@ -107,7 +107,7 @@ function ImageForm({ refresh }) {
 
             onChange={e=>setSlideId(e.target.value)}
 
-            options={slides}
+            options={[...slides].sort((a, b) => (a.title || "").localeCompare(b.title || "", "sv"))}
 
             labelField="title"
 
