@@ -225,7 +225,7 @@ function AdminPage() {
 
                 <button onClick={() => setSelectedPage("images")}>
 
-                    🖼 Bilder
+                    🔧 Bilder
 
                 </button>
 

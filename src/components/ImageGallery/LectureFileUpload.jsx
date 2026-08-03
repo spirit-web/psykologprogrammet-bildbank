@@ -55,7 +55,7 @@ function LectureFileUpload({ lecture, onUploaded }) {
 
             >
 
-                📄 Öppna PDF
+Öppna PDF
 
             </a>
 

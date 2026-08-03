@@ -73,7 +73,7 @@ function ImageForm({ refresh }) {
 
     return(
 
-        <AdminSection title="🖼 Ny bild">
+        <AdminSection title="🔧 Ny bild">
 
             <AdminInput
 

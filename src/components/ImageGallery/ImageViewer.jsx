@@ -9,13 +9,17 @@ import useFavorites from "../../hooks/useFavorites";
 import { deleteImage } from "../../services/adminDatabase";
 import { supabase } from "../../services/supabase";
 
-function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = true, onDeleted }) {
+function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = true, onDeleted, hideGrid = false, startId = null, onCloseLightbox }) {
 
     const { isFavorite, toggleFavorite } = useFavorites();
 
     const [deleting, setDeleting] = useState(false);
 
-    const [selectedImage, setSelectedImage] = useState(null);
+    const [selectedImage, setSelectedImage] = useState(
+
+        startId ? (images.find(image => image.id === startId) ?? null) : null
+
+    );
 
     const previousCount = useRef(images.length);
 
@@ -39,7 +43,7 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
     }, [images]);
 
-    const [fullscreen, setFullscreen] = useState(false);
+    const [fullscreen, setFullscreen] = useState(!!startId);
 
     const [zoom, setZoom] = useState(1);
 
@@ -82,6 +86,14 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
     }
 
     function toggleFullscreen() {
+
+        if (fullscreen && startId) {
+
+            onCloseLightbox?.();
+
+            return;
+
+        }
 
         setFullscreen(!fullscreen);
 
@@ -240,6 +252,21 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
             }
 
+            const panStep = 40;
+
+            if (fullscreen && zoom > 1 && event.key.startsWith("Arrow")) {
+
+                event.preventDefault();
+
+                if (event.key === "ArrowRight") setPan(p => ({ ...p, x: p.x - panStep }));
+                if (event.key === "ArrowLeft") setPan(p => ({ ...p, x: p.x + panStep }));
+                if (event.key === "ArrowDown") setPan(p => ({ ...p, y: p.y - panStep }));
+                if (event.key === "ArrowUp") setPan(p => ({ ...p, y: p.y + panStep }));
+
+                return;
+
+            }
+
             if (event.key === "ArrowRight") {
                 nextImage();
             }
@@ -249,7 +276,11 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
             }
 
             if (event.key === "Escape") {
-                setFullscreen(false);
+                if (startId) {
+                    onCloseLightbox?.();
+                } else {
+                    setFullscreen(false);
+                }
                 resetView();
             }
 
@@ -263,7 +294,7 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
         return () => window.removeEventListener("keydown", handleKeyDown);
 
-    }, [selectedImage, currentIndex, images]);
+    }, [selectedImage, currentIndex, images, fullscreen, zoom]);
 
     useEffect(() => {
 
@@ -283,21 +314,24 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
         <>
 
-            {uploadSlot}
+            {!hideGrid && uploadSlot}
 
             {
-                loading &&
+                !hideGrid && loading &&
                 <p>Laddar bilder...</p>
             }
 
             {
-                !loading && images.length === 0 &&
+                !hideGrid && !loading && images.length === 0 &&
                 <p>{emptyMessage || "Inga bilder ännu."}</p>
             }
 
             {
                 selectedImage &&
                 <>
+                {
+                    !hideGrid &&
+                    <>
                     <div className="image-navigation">
 
                         <button onClick={previousImage}>
@@ -382,18 +416,20 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
                     <p className="image-title">
                         {selectedImage.title}
                     </p>
+                    </>
+                }
 
                     {
 
                         fullscreen &&
 
-                        <div className="lightbox-overlay" onClick={toggleFullscreen}>
+                        <div className="lightbox-overlay">
 
                             <button
 
                                 className="lightbox-close"
 
-                                onClick={event => { event.stopPropagation(); toggleFullscreen(); }}
+                                onClick={toggleFullscreen}
 
                                 title="Stäng"
 
@@ -411,7 +447,7 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
                                     className="lightbox-nav lightbox-prev"
 
-                                    onClick={event => { event.stopPropagation(); previousImage(); }}
+                                    onClick={previousImage}
 
                                     title="Föregående"
 
@@ -431,7 +467,7 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
                                     className="lightbox-nav lightbox-next"
 
-                                    onClick={event => { event.stopPropagation(); nextImage(); }}
+                                    onClick={nextImage}
 
                                     title="Nästa"
 
@@ -457,19 +493,11 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
                                     transition: dragState.current ? "none" : "0.25s",
 
-                                    cursor: zoom > 1 ? "grab" : "zoom-out"
+                                    cursor: zoom > 1 ? "grab" : "default"
 
                                 }}
 
-                                onClick={event => {
-
-                                    event.stopPropagation();
-
-                                    if (zoom === 1) toggleFullscreen();
-
-                                }}
-
-                                onDoubleClick={event => { event.stopPropagation(); toggleZoom(); }}
+                                onDoubleClick={toggleZoom}
 
                                 onWheel={handleWheel}
 
@@ -489,6 +517,8 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
                 </>
             }
+
+            {!hideGrid &&
 
             <div className="gallery-grid">
 
@@ -515,6 +545,8 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
                 }
 
             </div>
+
+            }
 
         </>
 

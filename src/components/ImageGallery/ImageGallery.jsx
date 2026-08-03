@@ -48,7 +48,7 @@ function ImageGallery({ lecture, previousLecture, nextLecture, onNavigateLecture
 
                 >
 
-                    🖼 Minnesbilder
+                    Bilder
 
                 </button>
 
@@ -60,7 +60,7 @@ function ImageGallery({ lecture, previousLecture, nextLecture, onNavigateLecture
 
                 >
 
-                    📄 Originalslides {slides.length > 0 && `(${slides.length})`}
+                    Slides {slides.length > 0 && `(${slides.length})`}
 
                 </button>
 

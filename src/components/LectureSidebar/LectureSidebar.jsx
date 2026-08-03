@@ -2,14 +2,18 @@ import "./LectureSidebar.css";
 
 import { Link } from "react-router-dom";
 
+import useCourse from "../../hooks/useCourse";
+
 function LectureSidebar({ courseId }) {
+
+    const { course } = useCourse(courseId);
 
     return (
 
         <aside className="lecture-sidebar">
 
             <h2>
-                📚 Kursen
+                📚 {course?.name || "Kursen"}
             </h2>
 
             <Link
@@ -32,7 +36,7 @@ function LectureSidebar({ courseId }) {
 
             >
 
-                🖼 Alla psykologverktyg
+                🔧 Alla psykologverktyg
 
             </Link>
 

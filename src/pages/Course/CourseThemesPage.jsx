@@ -1,6 +1,9 @@
+import { useState } from "react";
+
 import { useParams } from "react-router-dom";
 
 import BackButton from "../../components/BackButton/BackButton";
+import ImageViewer from "../../components/ImageGallery/ImageViewer";
 
 import useCourse from "../../hooks/useCourse";
 import useCourseImages from "../../hooks/useCourseImages";
@@ -13,6 +16,8 @@ function CourseThemesPage() {
 
     const { images, loading } = useCourseImages(id);
 
+    const [lightboxId, setLightboxId] = useState(null);
+
     const sorted = [...images].sort((a, b) =>
         (a.title || "").localeCompare(b.title || "", "sv")
     );
@@ -23,7 +28,7 @@ function CourseThemesPage() {
 
             <BackButton />
 
-            <h1>🧠 Begrepp — {course?.name}</h1>
+            <h1 style={{ fontSize: 32, lineHeight: 1.3, margin: "20px 0 8px" }}>🧠 Begrepp — {course?.name}</h1>
 
             <p>Alla koncept som finns representerade i kursens bilder.</p>
 
@@ -37,11 +42,11 @@ function CourseThemesPage() {
                 <p>Inga bilder i den här kursen än.</p>
             }
 
-            <ul style={{ listStyle: "none", padding: 0, marginTop: 25 }}>
+            <ol style={{ listStyle: "none", padding: 0, marginTop: 25, counterReset: "concept" }}>
 
                 {
 
-                    sorted.map(image => (
+                    sorted.map((image, index) => (
 
                         <li
 
@@ -49,7 +54,13 @@ function CourseThemesPage() {
 
                             style={{
 
-                                padding: "14px 0",
+                                display: "flex",
+
+                                alignItems: "center",
+
+                                gap: 14,
+
+                                padding: "12px 0",
 
                                 borderBottom: "1px solid #eee"
 
@@ -57,19 +68,63 @@ function CourseThemesPage() {
 
                         >
 
-                            <strong>{image.title}</strong>
+                            <span style={{ width: 24, textAlign: "right", color: "#999", flexShrink: 0 }}>
+
+                                {index + 1}.
+
+                            </span>
 
                             {
 
-                                image.description &&
+                                image.image_url &&
 
-                                <p style={{ margin: "4px 0 0", color: "#666" }}>
+                                <img
 
-                                    {image.description}
+                                    src={image.image_url}
 
-                                </p>
+                                    alt={image.title}
+
+                                    onClick={() => setLightboxId(image.id)}
+
+                                    style={{
+
+                                        width: 48,
+
+                                        height: 48,
+
+                                        objectFit: "cover",
+
+                                        borderRadius: 6,
+
+                                        cursor: "pointer",
+
+                                        flexShrink: 0,
+
+                                        background: "#eef1f6"
+
+                                    }}
+
+                                />
 
                             }
+
+                            <div style={{ textAlign: "left" }}>
+
+                                <strong>{image.title}</strong>
+
+                                {
+
+                                    image.description &&
+
+                                    <p style={{ margin: "2px 0 0", color: "#888" }}>
+
+                                        {image.description}
+
+                                    </p>
+
+                                }
+
+                            </div>
 
                         </li>
 
@@ -77,7 +132,25 @@ function CourseThemesPage() {
 
                 }
 
-            </ul>
+            </ol>
+
+            {
+
+                lightboxId &&
+
+                <ImageViewer
+
+                    images={sorted}
+
+                    hideGrid
+
+                    startId={lightboxId}
+
+                    onCloseLightbox={() => setLightboxId(null)}
+
+                />
+
+            }
 
         </div>
 

@@ -15,7 +15,7 @@ const unlinkedCount =
 
 return(
 
-<AdminSection title="🖼 Alla bilder">
+<AdminSection title="🔧 Alla bilder">
 
 {
 
@@ -119,7 +119,7 @@ alignItems:"center"
 
 <p>
 
-🧠 {
+{
 
     image.image_themes?.length > 0
 

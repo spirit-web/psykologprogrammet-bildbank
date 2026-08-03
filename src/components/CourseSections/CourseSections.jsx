@@ -20,7 +20,7 @@ function CourseSections({ courseId }) {
         },
 
         {
-            icon:"🖼️",
+            icon:"🔧",
             title:"Alla psykologverktyg",
             text:"Alla bilder i kursen",
             onClick: () => navigate(`/course/${courseId}/bilder`)

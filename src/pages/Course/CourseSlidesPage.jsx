@@ -21,7 +21,7 @@ function CourseSlidesPage() {
 
                 <BackButton />
 
-                <h1>📄 Originalslides — {course?.name}</h1>
+                <h1 style={{ fontSize: 32, lineHeight: 1.3, margin: "20px 0 8px" }}>📄 Originalslides — {course?.name}</h1>
 
                 <p>Slidesen som psykologverktygs-bilderna i den här kursen är skapade utifrån.</p>
 
