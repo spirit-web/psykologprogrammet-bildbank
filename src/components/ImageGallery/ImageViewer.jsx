@@ -314,11 +314,16 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
         <div className="zoom-toolbar">
 
-            <button onClick={zoomOut}>➖</button>
+            {
+                layout === "compact" &&
+                <>
+                    <button onClick={zoomOut}>➖</button>
 
-            <span>{Math.round(zoom * 100)}%</span>
+                    <span>{Math.round(zoom * 100)}%</span>
 
-            <button onClick={zoomIn}>➕</button>
+                    <button onClick={zoomIn}>➕</button>
+                </>
+            }
 
             <button onClick={downloadImage} title="Ladda ned bild">
                 ⬇
@@ -365,25 +370,53 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
         <>
 
-            <div
+            <div className={layout === "browse" ? "main-image-wrapper-outer" : undefined}>
 
-                className="main-image-wrapper"
+                {
+                    layout === "browse" &&
+                    <button
+                        className="image-side-nav prev"
+                        onClick={previousImage}
+                        disabled={currentIndex <= 0}
+                        title="Föregående"
+                    >
+                        ⬅
+                    </button>
+                }
 
-                style={{ cursor: "zoom-in" }}
+                <div
 
-            >
+                    className="main-image-wrapper"
 
-                <img
+                    style={{ cursor: "zoom-in" }}
 
-                    className="main-image"
+                >
 
-                    src={selectedImage?.image_url}
+                    <img
 
-                    alt={selectedImage?.title}
+                        className="main-image"
 
-                    onClick={toggleFullscreen}
+                        src={selectedImage?.image_url}
 
-                />
+                        alt={selectedImage?.title}
+
+                        onClick={toggleFullscreen}
+
+                    />
+
+                </div>
+
+                {
+                    layout === "browse" &&
+                    <button
+                        className="image-side-nav next"
+                        onClick={nextImage}
+                        disabled={currentIndex === -1 || currentIndex >= images.length - 1}
+                        title="Nästa"
+                    >
+                        ➡
+                    </button>
+                }
 
             </div>
 
