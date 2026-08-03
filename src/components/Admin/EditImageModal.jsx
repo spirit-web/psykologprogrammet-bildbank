@@ -8,13 +8,11 @@ import AdminButton from "./AdminButton.jsx";
 import { updateImage } from "../../services/adminDatabase";
 import { getThemes, getThemesForImage, tagImage, untagImage } from "../../services/themes";
 
-function EditImageModal({ image, lectures, categories, slides, onClose, onSaved }) {
+function EditImageModal({ image, lectures, slides, onClose, onSaved }) {
 
     const [title, setTitle] = useState(image.title ?? "");
 
     const [lectureId, setLectureId] = useState(image.lecture_id ?? "");
-
-    const [categoryId, setCategoryId] = useState(image.category_id ?? "");
 
     const [slideId, setSlideId] = useState(image.slide_id ?? "");
 
@@ -81,8 +79,6 @@ function EditImageModal({ image, lectures, categories, slides, onClose, onSaved 
             title,
 
             lecture_id: lectureId ? Number(lectureId) : null,
-
-            category_id: categoryId ? Number(categoryId) : null,
 
             slide_id: slideId ? Number(slideId) : null,
 
@@ -234,21 +230,9 @@ function EditImageModal({ image, lectures, categories, slides, onClose, onSaved 
 
                 />
 
-                <AdminSelect
-
-                    label="Kategori (kursspecifik, en åt gången)"
-
-                    value={categoryId}
-
-                    onChange={e => setCategoryId(e.target.value)}
-
-                    options={categories}
-
-                />
-
                 <label style={{ display: "block", fontWeight: 600, margin: "15px 0 8px" }}>
 
-                    Teman (Hippocampus — flera samtidigt)
+                    Kategorier (flera samtidigt)
 
                 </label>
 

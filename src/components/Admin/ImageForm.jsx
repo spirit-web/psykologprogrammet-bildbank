@@ -18,8 +18,6 @@ function ImageForm({ refresh }) {
 
     const [lectureId,setLectureId]=useState("");
 
-    const [categoryId,setCategoryId]=useState("");
-
     const [slideId,setSlideId]=useState("");
 
     const [imageUrl,setImageUrl]=useState("");
@@ -28,8 +26,6 @@ function ImageForm({ refresh }) {
     const {
 
     lectures,
-
-    categories,
 
     slides
 
@@ -53,7 +49,6 @@ function ImageForm({ refresh }) {
 
             image_url: imageUrl,
             lecture_id: lectureId || null,
-            category_id: categoryId || null,
             slide_id: slideId || null,
 
             description
@@ -68,7 +63,6 @@ function ImageForm({ refresh }) {
 
         setTitle("");
         setLectureId("");
-        setCategoryId("");
         setSlideId("");
         setImageUrl("");
         setDescription("");
@@ -102,18 +96,6 @@ function ImageForm({ refresh }) {
             options={lectures}
 
             labelField="title"
-
-            />
-
-            <AdminSelect
-
-            label="Kategori"
-
-            value={categoryId}
-
-            onChange={e=>setCategoryId(e.target.value)}
-
-            options={categories}
 
             />
 

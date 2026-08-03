@@ -82,7 +82,7 @@ function HippocampusPage() {
 
                 <h1>🦭 Hippocampus</h1>
 
-                <p>Bläddra bilder per psykologiskt tema, oavsett vilken kurs de kommer ifrån.</p>
+                <p>Bläddra bilder per kategori, oavsett vilken kurs de kommer ifrån.</p>
 
                 {
 
@@ -128,7 +128,7 @@ function HippocampusPage() {
 
                                 <input
 
-                                    placeholder="+ Nytt tema"
+                                    placeholder="+ Ny kategori"
 
                                     value={newThemeName}
 
@@ -152,7 +152,7 @@ function HippocampusPage() {
 
                                 >
 
-                                    Lägg till tema
+                                    Lägg till kategori
 
                                 </button>
 
@@ -178,7 +178,7 @@ function HippocampusPage() {
 
                         >
 
-                            ← Alla teman
+                            ← Alla kategorier
 
                         </button>
 
@@ -190,7 +190,7 @@ function HippocampusPage() {
 
                             loading={loadingImages}
 
-                            emptyMessage="Inga bilder taggade med det här temat än — öppna en bild och klicka 🏷️ Teman för att koppla den hit."
+                            emptyMessage="Inga bilder kopplade till den här kategorin än — öppna en bild och klicka 🏷️ för att koppla den hit."
 
                             onDeleted={imageId => setImages(current => current.filter(image => image.id !== imageId))}
 

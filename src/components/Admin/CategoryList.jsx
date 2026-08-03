@@ -1,16 +1,13 @@
 import { useState } from "react";
 
 import AdminSection from "./AdminSection";
-import AdminSelect from "./AdminSelect";
-
-import { updateCategory } from "../../services/adminDatabase";
 import EmojiPicker from "./EmojiPicker";
+
+import { updateTheme } from "../../services/themes";
 
 function CategoryList({
 
     categories = [],
-
-    courses = [],
 
     onDelete,
 
@@ -24,8 +21,6 @@ function CategoryList({
 
     const [editIcon, setEditIcon] = useState("");
 
-    const [editCourseId, setEditCourseId] = useState("");
-
     function startEdit(category) {
 
         setEditingId(category.id);
@@ -34,19 +29,15 @@ function CategoryList({
 
         setEditIcon(category.icon ?? "");
 
-        setEditCourseId(category.course_id ?? "");
-
     }
 
     async function saveEdit() {
 
-        await updateCategory(editingId, {
+        await updateTheme(editingId, {
 
             name: editName,
 
-            icon: editIcon,
-
-            course_id: editCourseId ? Number(editCourseId) : null
+            icon: editIcon
 
         });
 
@@ -106,21 +97,11 @@ function CategoryList({
 
                         >
 
-                            <div>
+                            <h3>
 
-                                <h3>
+                                {category.icon} {category.name}
 
-                                    {category.icon} {category.name}
-
-                                </h3>
-
-                                <p>
-
-                                    📚 {category.courses?.name ?? "Ingen kurs kopplad"}
-
-                                </p>
-
-                            </div>
+                            </h3>
 
                             <div style={{ display: "flex", gap: 10 }}>
 
@@ -173,18 +154,6 @@ function CategoryList({
                                 />
 
                                 <EmojiPicker value={editIcon} onChange={setEditIcon} />
-
-                                <AdminSelect
-
-                                    label="Kurs"
-
-                                    value={editCourseId}
-
-                                    onChange={e => setEditCourseId(e.target.value)}
-
-                                    options={courses}
-
-                                />
 
                                 <button onClick={saveEdit}>💾 Spara</button>
 

@@ -33,16 +33,16 @@ import {
     getAllImages,
     getAllSlides,
     getAllTeachers,
-    getAllCategories,
 
     deleteCourse,
     deleteLecture,
     deleteImage,
     deleteSlide,
-    deleteTeacher,
-    deleteCategory
+    deleteTeacher
 
 } from "../../services/adminDatabase";
+
+import { getThemes, deleteTheme } from "../../services/themes";
 
 function AdminPage() {
 
@@ -70,7 +70,7 @@ function AdminPage() {
         setImages(await getAllImages());
         setSlides(await getAllSlides());
         setTeachers(await getAllTeachers());
-        setCategories(await getAllCategories());
+        setCategories(await getThemes());
 
     }
 
@@ -151,7 +151,7 @@ function AdminPage() {
 
     async function removeCategory(id) {
 
-        await deleteCategory(id);
+        await deleteTheme(id);
 
         loadAllKeepingScroll();
 
@@ -398,8 +398,6 @@ function AdminPage() {
                 image={editingImage}
 
                 lectures={lectures}
-
-                categories={categories}
 
                 slides={slides}
 

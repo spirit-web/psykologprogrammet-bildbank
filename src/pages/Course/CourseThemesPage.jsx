@@ -1,176 +1,85 @@
-import { useEffect, useState } from "react";
-
-import { useParams, useSearchParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 import BackButton from "../../components/BackButton/BackButton";
-import ImageViewer from "../../components/ImageGallery/ImageViewer";
-import "../../components/CourseSections/CourseSections.css";
 
 import useCourse from "../../hooks/useCourse";
-
-import {
-    getCourseThemes,
-    getCourseImagesByTheme
-} from "../../services/themes";
+import useCourseImages from "../../hooks/useCourseImages";
 
 function CourseThemesPage() {
 
     const { id } = useParams();
 
-    const [searchParams, setSearchParams] = useSearchParams();
-
     const { course } = useCourse(id);
 
-    const [themes, setThemes] = useState([]);
+    const { images, loading } = useCourseImages(id);
 
-    const [selectedThemeId, setSelectedThemeId] = useState(searchParams.get("tema") || null);
-
-    const [images, setImages] = useState([]);
-
-    const [loadingImages, setLoadingImages] = useState(false);
-
-    useEffect(() => {
-
-        if (id) {
-
-            getCourseThemes(id).then(setThemes);
-
-        }
-
-    }, [id]);
-
-    useEffect(() => {
-
-        async function load() {
-
-            if (!selectedThemeId) return;
-
-            setLoadingImages(true);
-
-            const data = await getCourseImagesByTheme(id, selectedThemeId);
-
-            setImages(data);
-
-            setLoadingImages(false);
-
-        }
-
-        load();
-
-    }, [id, selectedThemeId]);
-
-    function openTheme(themeId) {
-
-        setSelectedThemeId(themeId);
-
-        setSearchParams({ tema: themeId });
-
-    }
-
-    function backToThemes() {
-
-        setSelectedThemeId(null);
-
-        setSearchParams({});
-
-    }
-
-    const selectedTheme = themes.find(theme => theme.id === Number(selectedThemeId));
+    const sorted = [...images].sort((a, b) =>
+        (a.title || "").localeCompare(b.title || "", "sv")
+    );
 
     return (
 
-        <>
-            <div style={{ maxWidth: "1200px", margin: "auto", padding: "40px" }}>
+        <div style={{ maxWidth: "800px", margin: "auto", padding: "40px" }}>
 
-                <BackButton />
+            <BackButton />
 
-                <h1>🧠 Begrepp — {course?.name}</h1>
+            <h1>🧠 Begrepp — {course?.name}</h1>
 
-                <p>Teman med taggade bilder i den här kursen.</p>
+            <p>Alla koncept som finns representerade i kursens bilder.</p>
 
-                {
+            {
+                loading &&
+                <p>Laddar...</p>
+            }
 
-                    !selectedThemeId &&
+            {
+                !loading && sorted.length === 0 &&
+                <p>Inga bilder i den här kursen än.</p>
+            }
 
-                    <div className="section-grid">
-
-                        {
-
-                            themes.length === 0 &&
-
-                            <p>Inga taggade bilder i den här kursen än — öppna en bild och klicka 🏷️ Teman.</p>
-
-                        }
-
-                        {
-
-                            themes.map(theme => (
-
-                                <div
-
-                                    key={theme.id}
-
-                                    className="section-card"
-
-                                    style={{ cursor: "pointer" }}
-
-                                    onClick={() => openTheme(theme.id)}
-
-                                >
-
-                                    <h1>{theme.icon}</h1>
-
-                                    <h3>{theme.name}</h3>
-
-                                </div>
-
-                            ))
-
-                        }
-
-                    </div>
-
-                }
+            <ul style={{ listStyle: "none", padding: 0, marginTop: 25 }}>
 
                 {
 
-                    selectedThemeId &&
+                    sorted.map(image => (
 
-                    <>
+                        <li
 
-                        <button onClick={backToThemes} style={{ marginBottom: 20 }}>
+                            key={image.id}
 
-                            ← Alla teman
+                            style={{
 
-                        </button>
+                                padding: "14px 0",
 
-                        {
+                                borderBottom: "1px solid #eee"
 
-                            selectedTheme &&
+                            }}
 
-                            <h2>{selectedTheme.icon} {selectedTheme.name}</h2>
+                        >
 
-                        }
+                            <strong>{image.title}</strong>
 
-                        <ImageViewer
+                            {
 
-                            images={images}
+                                image.description &&
 
-                            loading={loadingImages}
+                                <p style={{ margin: "4px 0 0", color: "#666" }}>
 
-                            emptyMessage="Inga bilder taggade med det här temat i den här kursen."
+                                    {image.description}
 
-                            onDeleted={imageId => setImages(current => current.filter(image => image.id !== imageId))}
+                                </p>
 
-                        />
+                            }
 
-                    </>
+                        </li>
+
+                    ))
 
                 }
 
-            </div>
+            </ul>
 
-        </>
+        </div>
 
     );
 

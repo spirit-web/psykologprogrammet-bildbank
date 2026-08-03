@@ -1,93 +1,40 @@
 import "./LectureSidebar.css";
 
-import { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-
-import { getCourseThemes } from "../../services/themes";
+import { Link } from "react-router-dom";
 
 function LectureSidebar({ courseId }) {
-
-    const [themes, setThemes] = useState([]);
-
-    const location = useLocation();
-
-    useEffect(() => {
-
-        async function load() {
-
-            const data = await getCourseThemes(courseId);
-
-            setThemes(data);
-
-        }
-
-        if (courseId) {
-
-            load();
-
-        }
-
-    }, [courseId, location.key]);
-
-    useEffect(() => {
-
-        function handleThemesChanged() {
-
-            if (courseId) {
-
-                getCourseThemes(courseId).then(setThemes);
-
-            }
-
-        }
-
-        window.addEventListener("psykopedia-themes-changed", handleThemesChanged);
-
-        return () => window.removeEventListener("psykopedia-themes-changed", handleThemesChanged);
-
-    }, [courseId]);
 
     return (
 
         <aside className="lecture-sidebar">
 
             <h2>
-                🧠 Teman i kursen
+                📚 Kursen
             </h2>
 
-            {
+            <Link
 
-                themes.length === 0 &&
+                to={`/course/${courseId}/begrepp`}
 
-                <p style={{ fontSize: 13, color: "#888" }}>
+                className="lecture-link"
 
-                    Inga taggade bilder i den här kursen än.
+            >
 
-                </p>
+                🧠 Begrepp
 
-            }
+            </Link>
 
-            {
+            <Link
 
-                themes.map(theme => (
+                to={`/course/${courseId}/bilder`}
 
-                    <Link
+                className="lecture-link"
 
-                        key={theme.id}
+            >
 
-                        to={`/course/${courseId}/begrepp?tema=${theme.id}`}
+                🖼 Alla psykologverktyg
 
-                        className="lecture-link"
-
-                    >
-
-                        {theme.icon} {theme.name}
-
-                    </Link>
-
-                ))
-
-            }
+            </Link>
 
             <hr/>
 

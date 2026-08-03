@@ -8,11 +8,11 @@ import {
 
     getAllTeachers,
 
-    getAllCategories,
-
     getAllSlides
 
 } from "../services/adminDatabase";
+
+import { getThemes } from "../services/themes";
 
 function useAdminData(){
 
@@ -34,7 +34,7 @@ function useAdminData(){
 
         setTeachers(await getAllTeachers());
 
-        setCategories(await getAllCategories());
+        setCategories(await getThemes());
 
         setSlides(await getAllSlides());
 

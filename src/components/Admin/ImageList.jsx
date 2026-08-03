@@ -119,7 +119,15 @@ alignItems:"center"
 
 <p>
 
-🧠 {image.categories?.name ?? "Ingen kategori"}
+🧠 {
+
+    image.image_themes?.length > 0
+
+        ? image.image_themes.map(row => `${row.themes?.icon ?? ""} ${row.themes?.name}`).join(", ")
+
+        : "Ingen kategori"
+
+}
 
 </p>
 

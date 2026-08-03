@@ -200,6 +200,54 @@ export async function tagImage(imageId, themeId) {
 
 }
 
+export async function updateTheme(themeId, updates) {
+
+    const { data, error } = await supabase
+
+        .from("themes")
+
+        .update(updates)
+
+        .eq("id", themeId)
+
+        .select()
+
+        .single();
+
+    if (error) {
+
+        console.error(error);
+
+        return null;
+
+    }
+
+    return data;
+
+}
+
+export async function deleteTheme(themeId) {
+
+    const { error } = await supabase
+
+        .from("themes")
+
+        .delete()
+
+        .eq("id", themeId);
+
+    if (error) {
+
+        console.error(error);
+
+        return false;
+
+    }
+
+    return true;
+
+}
+
 export async function untagImage(imageId, themeId) {
 
     const { error } = await supabase

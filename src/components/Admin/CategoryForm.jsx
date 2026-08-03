@@ -2,22 +2,16 @@ import { useState } from "react";
 
 import AdminSection from "./AdminSection";
 import AdminInput from "./AdminInput";
-import AdminSelect from "./AdminSelect";
 import AdminButton from "./AdminButton.jsx";
-
-import { createCategory } from "../../services/adminDatabase";
-import useAdminData from "../../hooks/useAdminData";
 import EmojiPicker from "./EmojiPicker";
 
-function CategoryForm({ refresh }) {
+import { createTheme } from "../../services/themes";
 
-    const { courses } = useAdminData();
+function CategoryForm({ refresh }) {
 
     const [name, setName] = useState("");
 
     const [icon, setIcon] = useState("🧠");
-
-    const [courseId, setCourseId] = useState("");
 
     async function saveCategory() {
 
@@ -29,33 +23,13 @@ function CategoryForm({ refresh }) {
 
         }
 
-        if (!courseId) {
+        const created = await createTheme(name, icon);
 
-            alert("Välj vilken kurs kategorin hör till.");
-
-            return;
-
-        }
-
-        const success = await createCategory({
-
-            name,
-
-            icon,
-
-            course_id: Number(courseId),
-
-            sort_order: 1
-
-        });
-
-        if (success) {
+        if (created) {
 
             setName("");
 
             setIcon("🧠");
-
-            setCourseId("");
 
             refresh?.();
 
@@ -74,18 +48,6 @@ function CategoryForm({ refresh }) {
                 value={name}
 
                 onChange={event => setName(event.target.value)}
-
-            />
-
-            <AdminSelect
-
-                label="Kurs"
-
-                value={courseId}
-
-                onChange={event => setCourseId(event.target.value)}
-
-                options={courses}
 
             />
 

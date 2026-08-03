@@ -96,7 +96,7 @@ function ThemeTagger({ imageId }) {
 
         <div className="theme-tagger">
 
-            <button onClick={() => setOpen(!open)} title="Teman">
+            <button onClick={() => setOpen(!open)} title="Kategorier">
 
                 🏷️{taggedIds.length > 0 ? ` ${taggedIds.length}` : ""}
 
@@ -146,7 +146,7 @@ function ThemeTagger({ imageId }) {
 
                         <input
 
-                            placeholder="+ Nytt tema"
+                            placeholder="+ Ny kategori"
 
                             value={newThemeName}
 

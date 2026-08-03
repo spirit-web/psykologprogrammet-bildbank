@@ -333,7 +333,7 @@ export async function getAllImages() {
             *,
             lectures(title),
             original_slides(title, page_number),
-            categories(name)
+            image_themes(themes(id,name,icon))
         `)
 
         .order("lecture_id")
