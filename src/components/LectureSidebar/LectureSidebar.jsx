@@ -36,7 +36,7 @@ function LectureSidebar({ courseId }) {
 
             >
 
-                🔧 Alla psykologverktyg
+                🔧 Bilder
 
             </Link>
 

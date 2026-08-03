@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import BackButton from "../../components/BackButton/BackButton";
 import ImageViewer from "../../components/ImageGallery/ImageViewer";
 import EmojiPicker from "../../components/Admin/EmojiPicker";
-import HippocampusCases from "./HippocampusCases";
 import SeahorseIcon from "../../components/Icons/SeahorseIcon";
 import "../../components/CourseSections/CourseSections.css";
 
@@ -26,8 +25,6 @@ function HippocampusPage() {
     const [newThemeName, setNewThemeName] = useState("");
 
     const [newThemeIcon, setNewThemeIcon] = useState("🧠");
-
-    const [view, setView] = useState("categories");
 
     useEffect(() => {
 
@@ -98,33 +95,13 @@ function HippocampusPage() {
 
                 <BackButton />
 
-                <h1><SeahorseIcon size={38} /> Hippocampus</h1>
+                <h1><SeahorseIcon size={38} /> Teman</h1>
 
-                <p>Bläddra bilder per kategori, oavsett vilken kurs de kommer ifrån.</p>
-
-                <div className="gallery-tabs" style={{ marginBottom: 25 }}>
-
-                    <button
-                        className={view === "categories" ? "gallery-tab active" : "gallery-tab"}
-                        onClick={() => setView("categories")}
-                    >
-                        🧠 Kategorier
-                    </button>
-
-                    <button
-                        className={view === "cases" ? "gallery-tab active" : "gallery-tab"}
-                        onClick={() => setView("cases")}
-                    >
-                        🩺 Fall
-                    </button>
-
-                </div>
-
-                {view === "cases" && <HippocampusCases />}
+                <p>Bläddra bilder per tema, oavsett vilken kurs de kommer ifrån.</p>
 
                 {
 
-                    view === "categories" && !selectedTheme &&
+                    !selectedTheme &&
 
                     <>
 
@@ -166,7 +143,7 @@ function HippocampusPage() {
 
                                 <input
 
-                                    placeholder="+ Ny kategori"
+                                    placeholder="+ Nytt tema"
 
                                     value={newThemeName}
 
@@ -190,7 +167,7 @@ function HippocampusPage() {
 
                                 >
 
-                                    Lägg till kategori
+                                    Lägg till tema
 
                                 </button>
 
@@ -204,7 +181,7 @@ function HippocampusPage() {
 
                 {
 
-                    view === "categories" && selectedTheme &&
+                    selectedTheme &&
 
                     <>
 
@@ -216,7 +193,7 @@ function HippocampusPage() {
 
                         >
 
-                            ← Alla kategorier
+                            ← Alla teman
 
                         </button>
 
@@ -230,7 +207,7 @@ function HippocampusPage() {
 
                             >
 
-                                ⬅ Föregående kategori
+                                ⬅ Föregående tema
 
                             </button>
 
@@ -244,7 +221,7 @@ function HippocampusPage() {
 
                             >
 
-                                Nästa kategori ➡
+                                Nästa tema ➡
 
                             </button>
 

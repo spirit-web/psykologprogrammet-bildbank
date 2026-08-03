@@ -21,7 +21,7 @@ function CourseImagesPage() {
 
                 <BackButton />
 
-                <h1 style={{ fontSize: 32, lineHeight: 1.3, margin: "20px 0 8px" }}>🔧 Alla psykologverktyg — {course?.name}</h1>
+                <h1 style={{ fontSize: 32, lineHeight: 1.3, margin: "20px 0 8px" }}>🔧 Bilder — {course?.name}</h1>
 
                 <p>Alla minnesbilder från kursens föreläsningar, samlade på ett ställe.</p>
 

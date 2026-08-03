@@ -49,6 +49,7 @@ import {
 
 import { getThemes, deleteTheme } from "../../services/themes";
 import { getCases, deleteCase } from "../../services/cases";
+import { supabase } from "../../services/supabase";
 
 function AdminPage() {
 
@@ -217,7 +218,15 @@ function AdminPage() {
 
         >
 
-            <BackButton />
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+
+                <BackButton />
+
+                <button onClick={() => supabase.auth.signOut()}>
+                    🔒 Logga ut
+                </button>
+
+            </div>
 
             <h1>
 
@@ -287,7 +296,7 @@ function AdminPage() {
 
                 <button onClick={() => setSelectedPage("categories")}>
 
-                    🧠 Kategorier
+                    🧠 Teman
 
                 </button>
 

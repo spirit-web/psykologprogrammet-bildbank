@@ -68,7 +68,13 @@ function Navbar() {
 
         <Link to="/hippocampus" className="nav-button hippocampus">
 
-          <SeahorseIcon size={18} /> Hippocampus
+          <SeahorseIcon size={16} /> Teman
+
+        </Link>
+
+        <Link to="/fall" className="nav-button">
+
+          🩺 Fall
 
         </Link>
 

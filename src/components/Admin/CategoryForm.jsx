@@ -39,11 +39,11 @@ function CategoryForm({ refresh }) {
 
     return (
 
-        <AdminSection title="🧠 Ny kategori">
+        <AdminSection title="🧠 Nytt tema">
 
             <AdminInput
 
-                placeholder="Kategorinamn"
+                placeholder="Temanamn"
 
                 value={name}
 

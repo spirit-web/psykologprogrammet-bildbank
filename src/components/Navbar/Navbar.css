@@ -78,7 +78,11 @@ color:#666;
 
 display:flex;
 
-gap:12px;
+align-items:center;
+
+gap:8px;
+
+flex-wrap:wrap;
 
 }
 
@@ -122,7 +126,9 @@ align-items:center;
 
 justify-content:center;
 
-padding:10px 18px;
+gap:5px;
+
+padding:8px 14px;
 
 background:#214c9d;
 
@@ -133,6 +139,10 @@ border-radius:10px;
 text-decoration:none;
 
 font-weight:600;
+
+font-size:14px;
+
+white-space:nowrap;
 
 transition:.25s;
 

@@ -9,6 +9,13 @@ function CourseSections({ courseId }) {
     const sections = [
 
         {
+            icon:"🔧",
+            title:"Bilder",
+            text:"Alla bilder i kursen",
+            onClick: () => navigate(`/course/${courseId}/bilder`)
+        },
+
+        {
             icon:"📚",
             title:"Föreläsningar",
             text:"Visa alla föreläsningar",
@@ -17,20 +24,6 @@ function CourseSections({ courseId }) {
                 document.getElementById("lectures-section")?.scrollIntoView({ behavior: "smooth" });
 
             }
-        },
-
-        {
-            icon:"🔧",
-            title:"Alla psykologverktyg",
-            text:"Alla bilder i kursen",
-            onClick: () => navigate(`/course/${courseId}/bilder`)
-        },
-
-        {
-            icon:"🧠",
-            title:"Begrepp",
-            text:"Psykologiska koncept",
-            onClick: () => navigate(`/course/${courseId}/begrepp`)
         },
 
         {

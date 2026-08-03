@@ -6,6 +6,27 @@ import "../../components/CourseSections/CourseSections.css";
 import { getCases, getImagesForCase } from "../../services/cases";
 import { getAvatarUrl, getCategoryColor } from "../../utils/caseVisuals";
 
+// One representative case per diagnos shown by default; "Visa fler fall" reveals the rest.
+const DEFAULT_CASE_FIRST_NAMES = {
+    "ADHD": "Tomas",
+    "Ångestsyndrom": "Emma",
+    "Ätstörningar": "Erik",
+    "Autism": "Elias",
+    "Borderline": "Johanna",
+    "Depression": "Henrik",
+    "Missbruk/beroende": "Peter",
+    "Spelberoende": "Mikael",
+    "Tvångssyndrom": "Fatima"
+};
+
+function isDefaultCase(caseItem) {
+
+    const firstName = (caseItem.name || "").split(",")[0].trim();
+
+    return DEFAULT_CASE_FIRST_NAMES[caseItem.category] === firstName;
+
+}
+
 function HippocampusCases() {
 
     const [cases, setCases] = useState([]);
@@ -18,11 +39,19 @@ function HippocampusCases() {
 
     const [lightboxId, setLightboxId] = useState(null);
 
+    const [showAll, setShowAll] = useState(false);
+
     useEffect(() => {
 
         getCases().then(setCases);
 
     }, []);
+
+    const defaultCases = cases.filter(isDefaultCase);
+
+    const visibleCases = showAll ? cases : defaultCases;
+
+    const hasMoreCases = cases.length > defaultCases.length;
 
     async function openCase(caseItem) {
 
@@ -42,49 +71,68 @@ function HippocampusCases() {
 
             {
                 !selectedCase &&
-                <div className="section-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+                <>
+
+                    <div className="section-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
+
+                        {
+                            visibleCases.map(caseItem => {
+
+                                const color = getCategoryColor(caseItem.category);
+
+                                return (
+
+                                    <div
+                                        key={caseItem.id}
+                                        className="section-card"
+                                        style={{
+                                            cursor: "pointer",
+                                            background: color.bg,
+                                            border: `2px solid ${color.border}`
+                                        }}
+                                        onClick={() => openCase(caseItem)}
+                                    >
+
+                                        <img
+                                            src={getAvatarUrl(caseItem.name)}
+                                            alt={caseItem.name}
+                                            style={{ width: 72, height: 72, borderRadius: "50%", background: "#fff" }}
+                                        />
+
+                                        <h3 style={{ margin: "10px 0 0" }}>{caseItem.name}</h3>
+
+                                        {caseItem.category && <p style={{ color: color.label, margin: "4px 0 0", fontWeight: 600 }}>{caseItem.category}</p>}
+
+                                    </div>
+
+                                );
+
+                            })
+                        }
+
+                        {
+                            cases.length === 0 &&
+                            <p>Inga fall inlagda än.</p>
+                        }
+
+                    </div>
 
                     {
-                        cases.map(caseItem => {
+                        hasMoreCases &&
 
-                            const color = getCategoryColor(caseItem.category);
+                        <div style={{ textAlign: "center", marginTop: 25 }}>
 
-                            return (
+                            <button
+                                onClick={() => setShowAll(current => !current)}
+                                className="pill-button"
+                            >
+                                {showAll ? "Visa färre fall" : "Visa fler fall"}
+                            </button>
 
-                                <div
-                                    key={caseItem.id}
-                                    className="section-card"
-                                    style={{
-                                        cursor: "pointer",
-                                        background: color.bg,
-                                        border: `2px solid ${color.border}`
-                                    }}
-                                    onClick={() => openCase(caseItem)}
-                                >
-
-                                    <img
-                                        src={getAvatarUrl(caseItem.name)}
-                                        alt={caseItem.name}
-                                        style={{ width: 72, height: 72, borderRadius: "50%", background: "#fff" }}
-                                    />
-
-                                    <h3 style={{ margin: "10px 0 0" }}>{caseItem.name}</h3>
-
-                                    {caseItem.category && <p style={{ color: color.label, margin: "4px 0 0", fontWeight: 600 }}>{caseItem.category}</p>}
-
-                                </div>
-
-                            );
-
-                        })
+                        </div>
                     }
 
-                    {
-                        cases.length === 0 &&
-                        <p>Inga fall inlagda än.</p>
-                    }
-
-                </div>
+                </>
             }
 
             {

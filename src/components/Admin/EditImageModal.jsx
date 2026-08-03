@@ -232,7 +232,7 @@ function EditImageModal({ image, lectures, slides, onClose, onSaved }) {
 
                 <label style={{ display: "block", fontWeight: 600, margin: "15px 0 8px" }}>
 
-                    Kategorier (flera samtidigt)
+                    Teman (flera samtidigt)
 
                 </label>
 

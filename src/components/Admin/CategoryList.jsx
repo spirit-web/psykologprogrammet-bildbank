@@ -49,7 +49,7 @@ function CategoryList({
 
     return (
 
-        <AdminSection title="🧠 Alla kategorier">
+        <AdminSection title="🧠 Alla teman">
 
             {
 
