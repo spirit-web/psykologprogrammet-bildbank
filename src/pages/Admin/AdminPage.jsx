@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 import BackButton from "../../components/BackButton/BackButton";
 
@@ -14,6 +14,8 @@ import ImageList from "../../components/Admin/ImageList";
 import SlideList from "../../components/Admin/SlideList";
 import EditSlideModal from "../../components/Admin/EditSlideModal";
 import AdminSlideUpload from "../../components/Admin/AdminSlideUpload";
+
+import CoursePicker from "../../components/Admin/CoursePicker";
 
 import TeacherForm from "../../components/Admin/TeacherForm";
 import TeacherList from "../../components/Admin/TeacherList";
@@ -67,6 +69,34 @@ function AdminPage() {
     const [editingCourse, setEditingCourse] = useState(null);
 
     const [editingLecture, setEditingLecture] = useState(null);
+
+    const [activeCourseId, setActiveCourseId] = useState(null);
+
+    const lectureCourseMap = useMemo(() => {
+
+        const map = new Map();
+
+        lectures.forEach(lecture => map.set(lecture.id, lecture.course_id));
+
+        return map;
+
+    }, [lectures]);
+
+    const lecturesForCourse = activeCourseId === "unlinked"
+        ? []
+        : lectures.filter(lecture => lecture.course_id === activeCourseId);
+
+    const imagesForCourse = activeCourseId === "unlinked"
+        ? images.filter(image => !image.lecture_id)
+        : images.filter(image => lectureCourseMap.get(image.lecture_id) === activeCourseId);
+
+    const slidesForCourse = activeCourseId === "unlinked"
+        ? slides.filter(slide => !slide.lecture_id)
+        : slides.filter(slide => lectureCourseMap.get(slide.lecture_id) === activeCourseId);
+
+    const unlinkedImagesCount = images.filter(image => !image.lecture_id).length;
+
+    const unlinkedSlidesCount = slides.filter(slide => !slide.lecture_id).length;
 
     async function loadAll() {
 
@@ -291,73 +321,128 @@ function AdminPage() {
 
             {selectedPage === "lectures" && (
 
-                <>
+                activeCourseId === null ? (
 
-                    <LectureForm refresh={loadAll} />
-
-                    <LectureList
-
-                        lectures={lectures}
-
-                        onDelete={removeLecture}
-
-                        onEdit={setEditingLecture}
-
+                    <CoursePicker
+                        courses={courses}
+                        onSelect={setActiveCourseId}
                     />
 
-                </>
+                ) : (
+
+                    <>
+
+                        <button onClick={() => setActiveCourseId(null)} style={{ marginBottom: 20 }}>
+                            ← Alla kurser
+                        </button>
+
+                        <h3>{courses.find(course => course.id === activeCourseId)?.name}</h3>
+
+                        <LectureForm refresh={loadAll} />
+
+                        <LectureList
+
+                            lectures={lecturesForCourse}
+
+                            onDelete={removeLecture}
+
+                            onEdit={setEditingLecture}
+
+                        />
+
+                    </>
+
+                )
 
             )}
 
             {selectedPage === "images" && (
 
-                <>
+                activeCourseId === null ? (
 
-                    <ImageForm refresh={loadAll} />
-
-                    <ImageList
-
-                        images={images}
-
-                        onDelete={removeImage}
-
-                        onEdit={setEditingImage}
-
+                    <CoursePicker
+                        courses={courses}
+                        onSelect={setActiveCourseId}
+                        unlinkedLabel="Okopplade bilder"
+                        unlinkedCount={unlinkedImagesCount}
                     />
 
-                </>
+                ) : (
+
+                    <>
+
+                        <button onClick={() => setActiveCourseId(null)} style={{ marginBottom: 20 }}>
+                            ← Alla kurser
+                        </button>
+
+                        <h3>{activeCourseId === "unlinked" ? "❓ Okopplade bilder" : courses.find(course => course.id === activeCourseId)?.name}</h3>
+
+                        <ImageForm refresh={loadAll} />
+
+                        <ImageList
+
+                            images={imagesForCourse}
+
+                            onDelete={removeImage}
+
+                            onEdit={setEditingImage}
+
+                        />
+
+                    </>
+
+                )
 
             )}
 
             {selectedPage === "slides" && (
 
-                <>
+                activeCourseId === null ? (
 
-                    <p style={{color:"#666"}}>
-
-                        Ladda upp originalslides och koppla direkt till rätt föreläsning, eller gör det via föreläsningssidans flik "Originalslides".
-
-                    </p>
-
-                    <AdminSlideUpload
-
-                        lectures={lectures}
-
-                        refresh={loadAll}
-
+                    <CoursePicker
+                        courses={courses}
+                        onSelect={setActiveCourseId}
+                        unlinkedLabel="Okopplade slides"
+                        unlinkedCount={unlinkedSlidesCount}
                     />
 
-                    <SlideList
+                ) : (
 
-                        slides={slides}
+                    <>
 
-                        onDelete={removeSlide}
+                        <button onClick={() => setActiveCourseId(null)} style={{ marginBottom: 20 }}>
+                            ← Alla kurser
+                        </button>
 
-                        onEdit={setEditingSlide}
+                        <h3>{activeCourseId === "unlinked" ? "❓ Okopplade slides" : courses.find(course => course.id === activeCourseId)?.name}</h3>
 
-                    />
+                        <p style={{color:"#666"}}>
 
-                </>
+                            Ladda upp originalslides och koppla direkt till rätt föreläsning, eller gör det via föreläsningssidans flik "Originalslides".
+
+                        </p>
+
+                        <AdminSlideUpload
+
+                            lectures={activeCourseId === "unlinked" ? lectures : lecturesForCourse}
+
+                            refresh={loadAll}
+
+                        />
+
+                        <SlideList
+
+                            slides={slidesForCourse}
+
+                            onDelete={removeSlide}
+
+                            onEdit={setEditingSlide}
+
+                        />
+
+                    </>
+
+                )
 
             )}
 

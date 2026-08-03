@@ -42,7 +42,7 @@ function HippocampusCases() {
 
             {
                 !selectedCase &&
-                <div className="section-grid">
+                <div className="section-grid" style={{ gridTemplateColumns: "repeat(3, 1fr)" }}>
 
                     {
                         cases.map(caseItem => {
