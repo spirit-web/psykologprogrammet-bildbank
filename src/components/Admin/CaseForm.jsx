@@ -4,9 +4,9 @@ import AdminSection from "./AdminSection";
 import AdminInput from "./AdminInput";
 import AdminTextarea from "./AdminTextarea";
 import AdminButton from "./AdminButton.jsx";
-import EmojiPicker from "./EmojiPicker";
 
 import { createCase } from "../../services/cases";
+import { getAvatarUrl, CASE_CATEGORIES } from "../../utils/caseVisuals";
 
 function CaseForm({ refresh }) {
 
@@ -17,8 +17,6 @@ function CaseForm({ refresh }) {
     const [category, setCategory] = useState("");
 
     const [description, setDescription] = useState("");
-
-    const [avatar, setAvatar] = useState("🧑");
 
     async function save() {
 
@@ -38,9 +36,7 @@ function CaseForm({ refresh }) {
 
             category,
 
-            description,
-
-            avatar
+            description
 
         });
 
@@ -50,7 +46,6 @@ function CaseForm({ refresh }) {
             setOccupation("");
             setCategory("");
             setDescription("");
-            setAvatar("🧑");
 
             refresh?.();
 
@@ -61,6 +56,15 @@ function CaseForm({ refresh }) {
     return (
 
         <AdminSection title="🩺 Nytt fall">
+
+            {
+                name.trim() &&
+                <img
+                    src={getAvatarUrl(name)}
+                    alt="Avatar"
+                    style={{ width: 80, height: 80, borderRadius: "50%", marginBottom: 15, background: "#f4f4f4" }}
+                />
+            }
 
             <AdminInput
                 placeholder="Namn (t.ex. Emma, 23 år)"
@@ -74,13 +78,17 @@ function CaseForm({ refresh }) {
                 onChange={event => setOccupation(event.target.value)}
             />
 
-            <AdminInput
+            <input
+                list="case-categories"
                 placeholder="Kategori/diagnos (t.ex. Ångestsyndrom)"
                 value={category}
                 onChange={event => setCategory(event.target.value)}
+                style={{ width: "100%", padding: 12, borderRadius: 10, border: "1px solid #ddd", marginBottom: 15, fontSize: 15 }}
             />
 
-            <EmojiPicker value={avatar} onChange={setAvatar} />
+            <datalist id="case-categories">
+                {CASE_CATEGORIES.map(categoryName => <option key={categoryName} value={categoryName} />)}
+            </datalist>
 
             <AdminTextarea
                 placeholder="Beskrivning av fallet"

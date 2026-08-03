@@ -1,10 +1,10 @@
 import { useState } from "react";
 
 import AdminSection from "./AdminSection";
-import EmojiPicker from "./EmojiPicker";
 import LinkCaseImagesModal from "./LinkCaseImagesModal";
 
 import { updateCase } from "../../services/cases";
+import { getAvatarUrl, getCategoryColor, CASE_CATEGORIES } from "../../utils/caseVisuals";
 
 function CaseList({ cases = [], images = [], onDelete, refresh }) {
 
@@ -14,7 +14,6 @@ function CaseList({ cases = [], images = [], onDelete, refresh }) {
     const [editOccupation, setEditOccupation] = useState("");
     const [editCategory, setEditCategory] = useState("");
     const [editDescription, setEditDescription] = useState("");
-    const [editAvatar, setEditAvatar] = useState("");
 
     const [linkingCase, setLinkingCase] = useState(null);
 
@@ -25,7 +24,6 @@ function CaseList({ cases = [], images = [], onDelete, refresh }) {
         setEditOccupation(caseItem.occupation ?? "");
         setEditCategory(caseItem.category ?? "");
         setEditDescription(caseItem.description ?? "");
-        setEditAvatar(caseItem.avatar ?? "🧑");
 
     }
 
@@ -35,8 +33,7 @@ function CaseList({ cases = [], images = [], onDelete, refresh }) {
             name: editName,
             occupation: editOccupation,
             category: editCategory,
-            description: editDescription,
-            avatar: editAvatar
+            description: editDescription
         });
 
         setEditingId(null);
@@ -55,90 +52,109 @@ function CaseList({ cases = [], images = [], onDelete, refresh }) {
             }
 
             {
-                cases.map(caseItem => (
+                cases.map(caseItem => {
 
-                    <div
-                        key={caseItem.id}
-                        style={{
-                            border: "1px solid #ddd",
-                            borderRadius: 14,
-                            padding: 20,
-                            marginBottom: 15,
-                            background: "#fff"
-                        }}
-                    >
+                    const color = getCategoryColor(caseItem.category);
 
-                        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                    return (
 
-                            <h3>
-                                {caseItem.avatar} {caseItem.name}
-                                {caseItem.category && <span style={{ color: "#888", fontWeight: 400 }}> — {caseItem.category}</span>}
-                            </h3>
+                        <div
+                            key={caseItem.id}
+                            style={{
+                                border: `2px solid ${color.border}`,
+                                background: color.bg,
+                                borderRadius: 14,
+                                padding: 20,
+                                marginBottom: 15
+                            }}
+                        >
 
-                            <div style={{ display: "flex", gap: 10 }}>
+                            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
 
-                                <button onClick={() => setLinkingCase(caseItem)}>
-                                    🔗 Koppla verktyg
-                                </button>
+                                <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
 
-                                <button onClick={() => startEdit(caseItem)}>
-                                    ✏️
-                                </button>
+                                    <img
+                                        src={getAvatarUrl(caseItem.name)}
+                                        alt={caseItem.name}
+                                        style={{ width: 48, height: 48, borderRadius: "50%", background: "#fff" }}
+                                    />
 
-                                <button onClick={() => onDelete(caseItem.id)}>
-                                    🗑
-                                </button>
+                                    <h3 style={{ margin: 0 }}>
+                                        {caseItem.name}
+                                        {caseItem.category && <span style={{ color: color.label, fontWeight: 400 }}> — {caseItem.category}</span>}
+                                    </h3>
+
+                                </div>
+
+                                <div style={{ display: "flex", gap: 10 }}>
+
+                                    <button onClick={() => setLinkingCase(caseItem)}>
+                                        🔗 Koppla verktyg
+                                    </button>
+
+                                    <button onClick={() => startEdit(caseItem)}>
+                                        ✏️
+                                    </button>
+
+                                    <button onClick={() => onDelete(caseItem.id)}>
+                                        🗑
+                                    </button>
+
+                                </div>
 
                             </div>
+
+                            {caseItem.occupation && <p style={{ color: "#666", margin: "5px 0 0 62px" }}>{caseItem.occupation}</p>}
+
+                            {
+                                editingId === caseItem.id &&
+                                <div style={{ marginTop: 15, padding: 15, background: "rgba(255,255,255,0.6)", borderRadius: 10 }}>
+
+                                    <input
+                                        value={editName}
+                                        onChange={e => setEditName(e.target.value)}
+                                        placeholder="Namn"
+                                        style={{ width: "100%", padding: 10, marginBottom: 10, borderRadius: 8, border: "1px solid #ddd" }}
+                                    />
+
+                                    <input
+                                        value={editOccupation}
+                                        onChange={e => setEditOccupation(e.target.value)}
+                                        placeholder="Sysselsättning"
+                                        style={{ width: "100%", padding: 10, marginBottom: 10, borderRadius: 8, border: "1px solid #ddd" }}
+                                    />
+
+                                    <input
+                                        list="case-categories"
+                                        value={editCategory}
+                                        onChange={e => setEditCategory(e.target.value)}
+                                        placeholder="Kategori/diagnos"
+                                        style={{ width: "100%", padding: 10, marginBottom: 10, borderRadius: 8, border: "1px solid #ddd" }}
+                                    />
+
+                                    <datalist id="case-categories">
+                                        {CASE_CATEGORIES.map(categoryName => <option key={categoryName} value={categoryName} />)}
+                                    </datalist>
+
+                                    <textarea
+                                        rows={5}
+                                        value={editDescription}
+                                        onChange={e => setEditDescription(e.target.value)}
+                                        placeholder="Beskrivning"
+                                        style={{ width: "100%", padding: 10, marginBottom: 10, borderRadius: 8, border: "1px solid #ddd", resize: "vertical" }}
+                                    />
+
+                                    <button onClick={saveEdit}>💾 Spara</button>
+                                    <button onClick={() => setEditingId(null)} style={{ marginLeft: 10 }}>Avbryt</button>
+
+                                </div>
+                            }
 
                         </div>
 
-                        {caseItem.occupation && <p style={{ color: "#666", margin: "5px 0" }}>{caseItem.occupation}</p>}
+                    );
 
-                        {
-                            editingId === caseItem.id &&
-                            <div style={{ marginTop: 15, padding: 15, background: "#fafafa", borderRadius: 10 }}>
-
-                                <input
-                                    value={editName}
-                                    onChange={e => setEditName(e.target.value)}
-                                    placeholder="Namn"
-                                    style={{ width: "100%", padding: 10, marginBottom: 10, borderRadius: 8, border: "1px solid #ddd" }}
-                                />
-
-                                <input
-                                    value={editOccupation}
-                                    onChange={e => setEditOccupation(e.target.value)}
-                                    placeholder="Sysselsättning"
-                                    style={{ width: "100%", padding: 10, marginBottom: 10, borderRadius: 8, border: "1px solid #ddd" }}
-                                />
-
-                                <input
-                                    value={editCategory}
-                                    onChange={e => setEditCategory(e.target.value)}
-                                    placeholder="Kategori/diagnos"
-                                    style={{ width: "100%", padding: 10, marginBottom: 10, borderRadius: 8, border: "1px solid #ddd" }}
-                                />
-
-                                <EmojiPicker value={editAvatar} onChange={setEditAvatar} />
-
-                                <textarea
-                                    rows={5}
-                                    value={editDescription}
-                                    onChange={e => setEditDescription(e.target.value)}
-                                    placeholder="Beskrivning"
-                                    style={{ width: "100%", padding: 10, marginBottom: 10, borderRadius: 8, border: "1px solid #ddd", resize: "vertical" }}
-                                />
-
-                                <button onClick={saveEdit}>💾 Spara</button>
-                                <button onClick={() => setEditingId(null)} style={{ marginLeft: 10 }}>Avbryt</button>
-
-                            </div>
-                        }
-
-                    </div>
-
-                ))
+                })
             }
 
             {

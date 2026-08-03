@@ -4,6 +4,7 @@ import ImageViewer from "../../components/ImageGallery/ImageViewer";
 import "../../components/CourseSections/CourseSections.css";
 
 import { getCases, getImagesForCase } from "../../services/cases";
+import { getAvatarUrl, getCategoryColor } from "../../utils/caseVisuals";
 
 function HippocampusCases() {
 
@@ -44,24 +45,38 @@ function HippocampusCases() {
                 <div className="section-grid">
 
                     {
-                        cases.map(caseItem => (
+                        cases.map(caseItem => {
 
-                            <div
-                                key={caseItem.id}
-                                className="section-card"
-                                style={{ cursor: "pointer" }}
-                                onClick={() => openCase(caseItem)}
-                            >
+                            const color = getCategoryColor(caseItem.category);
 
-                                <h1>{caseItem.avatar}</h1>
+                            return (
 
-                                <h3>{caseItem.name}</h3>
+                                <div
+                                    key={caseItem.id}
+                                    className="section-card"
+                                    style={{
+                                        cursor: "pointer",
+                                        background: color.bg,
+                                        border: `2px solid ${color.border}`
+                                    }}
+                                    onClick={() => openCase(caseItem)}
+                                >
 
-                                {caseItem.category && <p style={{ color: "#888", margin: "4px 0 0" }}>{caseItem.category}</p>}
+                                    <img
+                                        src={getAvatarUrl(caseItem.name)}
+                                        alt={caseItem.name}
+                                        style={{ width: 72, height: 72, borderRadius: "50%", background: "#fff" }}
+                                    />
 
-                            </div>
+                                    <h3 style={{ margin: "10px 0 0" }}>{caseItem.name}</h3>
 
-                        ))
+                                    {caseItem.category && <p style={{ color: color.label, margin: "4px 0 0", fontWeight: 600 }}>{caseItem.category}</p>}
+
+                                </div>
+
+                            );
+
+                        })
                     }
 
                     {
@@ -85,7 +100,11 @@ function HippocampusCases() {
 
                     <div style={{ display: "flex", alignItems: "center", gap: 20, marginBottom: 20 }}>
 
-                        <div style={{ fontSize: 56 }}>{selectedCase.avatar}</div>
+                        <img
+                            src={getAvatarUrl(selectedCase.name)}
+                            alt={selectedCase.name}
+                            style={{ width: 96, height: 96, borderRadius: "50%", background: getCategoryColor(selectedCase.category).bg, border: `3px solid ${getCategoryColor(selectedCase.category).border}` }}
+                        />
 
                         <div>
 
