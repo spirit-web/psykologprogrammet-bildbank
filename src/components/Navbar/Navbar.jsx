@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import MusicPlayer from "./MusicPlayer";
+import SeahorseIcon from "../Icons/SeahorseIcon";
 
 function Navbar() {
 
@@ -67,7 +68,7 @@ function Navbar() {
 
         <Link to="/hippocampus" className="nav-button hippocampus">
 
-          🦭 Hippocampus
+          <SeahorseIcon size={18} /> Hippocampus
 
         </Link>
 

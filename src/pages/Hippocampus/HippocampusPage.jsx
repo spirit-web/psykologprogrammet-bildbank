@@ -4,6 +4,7 @@ import BackButton from "../../components/BackButton/BackButton";
 import ImageViewer from "../../components/ImageGallery/ImageViewer";
 import EmojiPicker from "../../components/Admin/EmojiPicker";
 import HippocampusCases from "./HippocampusCases";
+import SeahorseIcon from "../../components/Icons/SeahorseIcon";
 import "../../components/CourseSections/CourseSections.css";
 
 import {
@@ -97,7 +98,7 @@ function HippocampusPage() {
 
                 <BackButton />
 
-                <h1>🦭 Hippocampus</h1>
+                <h1><SeahorseIcon size={38} /> Hippocampus</h1>
 
                 <p>Bläddra bilder per kategori, oavsett vilken kurs de kommer ifrån.</p>
 
