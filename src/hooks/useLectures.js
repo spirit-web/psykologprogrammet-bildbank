@@ -36,31 +36,11 @@ export default function useLectures(courseId){
 
     },[courseId]);
 
-    function bumpImageCount(lectureId){
-
-        setLectures(current =>
-
-            current.map(lecture =>
-
-                lecture.id === lectureId
-
-                    ? { ...lecture, images: (lecture.images ?? 0) + 1 }
-
-                    : lecture
-
-            )
-
-        );
-
-    }
-
     return{
 
         lectures,
 
-        loading,
-
-        bumpImageCount
+        loading
 
     };
 

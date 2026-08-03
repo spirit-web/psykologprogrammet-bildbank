@@ -10,9 +10,7 @@ function LectureList({ course }) {
 
         lectures,
 
-        loading,
-
-        bumpImageCount
+        loading
 
     } = useLectures(course.id);
 
@@ -43,8 +41,6 @@ function LectureList({ course }) {
                             key={lecture.id}
 
                             lecture={lecture}
-
-                            onUploaded={() => bumpImageCount(lecture.id)}
 
                         />
 

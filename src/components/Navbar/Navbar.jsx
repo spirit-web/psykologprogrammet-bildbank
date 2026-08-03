@@ -1,10 +1,38 @@
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./Navbar.css";
 import MusicPlayer from "./MusicPlayer";
 
 function Navbar() {
+
+  const [hidden, setHidden] = useState(false);
+
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+
+    function handleScroll() {
+
+      const currentY = window.scrollY;
+
+      const scrolledDown = currentY > lastScrollY.current;
+
+      const pastThreshold = currentY > 80;
+
+      setHidden(scrolledDown && pastThreshold);
+
+      lastScrollY.current = currentY;
+
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => window.removeEventListener("scroll", handleScroll);
+
+  }, []);
+
   return (
-    <header className="navbar">
+    <header className={hidden ? "navbar navbar-hidden" : "navbar"}>
 
       <Link to="/" className="navbar-left navbar-home-link">
 

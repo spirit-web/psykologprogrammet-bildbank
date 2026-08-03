@@ -96,27 +96,141 @@ color:#214c9d;
 
 }
 
-.fullscreen{
+.lightbox-overlay{
 
 position:fixed;
 
-top:0;
+inset:0;
 
-left:0;
-
-width:100vw;
-
-height:100vh;
-
-object-fit:contain;
-
-background:black;
+background:rgba(0,0,0,0.92);
 
 z-index:9999;
 
-padding:40px;
+display:flex;
 
-cursor:zoom-out;
+align-items:center;
+
+justify-content:center;
+
+}
+
+.lightbox-image{
+
+max-width:90vw;
+
+max-height:90vh;
+
+object-fit:contain;
+
+}
+
+.lightbox-close{
+
+position:fixed;
+
+top:20px;
+
+right:20px;
+
+width:44px;
+
+height:44px;
+
+border:none;
+
+border-radius:50%;
+
+background:rgba(255,255,255,0.15);
+
+color:white;
+
+font-size:20px;
+
+cursor:pointer;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+transition:.2s;
+
+}
+
+.lightbox-close:hover{
+
+background:rgba(255,255,255,0.3);
+
+}
+
+.lightbox-nav{
+
+position:fixed;
+
+top:50%;
+
+transform:translateY(-50%);
+
+width:52px;
+
+height:52px;
+
+border:none;
+
+border-radius:50%;
+
+background:rgba(255,255,255,0.15);
+
+color:white;
+
+font-size:22px;
+
+cursor:pointer;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+transition:.2s;
+
+}
+
+.lightbox-nav:hover{
+
+background:rgba(255,255,255,0.3);
+
+}
+
+.lightbox-prev{
+
+left:20px;
+
+}
+
+.lightbox-next{
+
+right:20px;
+
+}
+
+@media (max-width:700px){
+
+.lightbox-nav{
+
+width:40px;
+
+height:40px;
+
+font-size:18px;
+
+}
+
+.lightbox-prev{ left:8px; }
+
+.lightbox-next{ right:8px; }
 
 }
 
@@ -188,12 +302,6 @@ object-fit:contain;
 
 }
 
-.main-image.fullscreen{
-
-cursor:zoom-out;
-
-}
-
 .thumbnail{
 
 scroll-margin-inline:120px;
@@ -226,9 +334,55 @@ color:#333;
 
 display:flex;
 
+flex-wrap:wrap;
+
 gap:10px;
 
 margin:15px 0;
+
+align-items:center;
+
+}
+
+.pill-button{
+
+background:#eef3ff;
+
+color:#214c9d;
+
+border:none;
+
+padding:10px 18px;
+
+border-radius:10px;
+
+cursor:pointer;
+
+font-weight:600;
+
+font-size:14px;
+
+text-decoration:none;
+
+display:inline-flex;
+
+align-items:center;
+
+transition:.2s;
+
+}
+
+.pill-button:hover{
+
+background:#dbe6ff;
+
+}
+
+.pill-button:disabled{
+
+opacity:.4;
+
+cursor:default;
 
 }
 

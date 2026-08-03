@@ -45,7 +45,7 @@ function LectureFileUpload({ lecture, onUploaded }) {
 
             <a
 
-                className="lecture-pdf-button"
+                className="pill-button"
 
                 href={lecture.pdf_url}
 
@@ -55,7 +55,7 @@ function LectureFileUpload({ lecture, onUploaded }) {
 
             >
 
-                📄 Öppna föreläsningens originalmaterial
+                📄 Öppna PDF
 
             </a>
 

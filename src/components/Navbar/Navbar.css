@@ -18,6 +18,16 @@ top:0;
 
 z-index:1000;
 
+transform:translateY(0);
+
+transition:transform .25s ease;
+
+}
+
+.navbar-hidden{
+
+transform:translateY(-100%);
+
 }
 
 .navbar-left{

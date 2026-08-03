@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
 
-import QuickImageUpload from "../ImageGallery/QuickImageUpload";
-
-function LectureCard({ lecture, onUploaded }) {
+function LectureCard({ lecture }) {
 
     return(
 
@@ -56,7 +54,7 @@ function LectureCard({ lecture, onUploaded }) {
 
         <h3>
 
-        {lecture.featured && "⭐ "}📚 {lecture.title}
+        {lecture.featured && <span className="lecture-card-star">⭐</span>} {lecture.title}
 
         </h3>
 
@@ -70,7 +68,7 @@ function LectureCard({ lecture, onUploaded }) {
 
         <button>
 
-        Öppna föreläsning
+        Se bilder
 
         </button>
 
@@ -112,35 +110,17 @@ function LectureCard({ lecture, onUploaded }) {
 
         >
 
-        📄 Öppna originalmaterial
+        📄 Öppna PDF
 
         </button>
 
         }
 
-        <div
-
-        onClick={event => event.preventDefault()}
-
-        style={{marginTop:10}}
-
-        >
-
-        <QuickImageUpload
-
-        lectureId={lecture.id}
-
-        onUploaded={onUploaded}
-
-        />
-
-        </div>
-
         </div>
 
         </Link>
 
-        );
+    );
 
 }
 

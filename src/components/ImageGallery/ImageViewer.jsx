@@ -361,39 +361,19 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
                         className="main-image-wrapper"
 
-                        style={{ cursor: zoom > 1 ? "grab" : "zoom-in" }}
+                        style={{ cursor: "zoom-in" }}
 
                     >
 
                         <img
 
-                            className={fullscreen ? "main-image fullscreen" : "main-image"}
+                            className="main-image"
 
                             src={selectedImage.image_url}
 
                             alt={selectedImage.title}
 
-                            style={{
-
-                                transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
-
-                                transition: dragState.current ? "none" : "0.25s"
-
-                            }}
-
-                            onClick={zoom === 1 ? toggleFullscreen : undefined}
-
-                            onDoubleClick={toggleZoom}
-
-                            onWheel={handleWheel}
-
-                            onMouseDown={handlePointerDown}
-
-                            onMouseMove={handlePointerMove}
-
-                            onMouseUp={handlePointerUp}
-
-                            onMouseLeave={handlePointerUp}
+                            onClick={toggleFullscreen}
 
                         />
 
@@ -402,6 +382,110 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
                     <p className="image-title">
                         {selectedImage.title}
                     </p>
+
+                    {
+
+                        fullscreen &&
+
+                        <div className="lightbox-overlay" onClick={toggleFullscreen}>
+
+                            <button
+
+                                className="lightbox-close"
+
+                                onClick={event => { event.stopPropagation(); toggleFullscreen(); }}
+
+                                title="Stäng"
+
+                            >
+
+                                ✕
+
+                            </button>
+
+                            {
+
+                                currentIndex > 0 &&
+
+                                <button
+
+                                    className="lightbox-nav lightbox-prev"
+
+                                    onClick={event => { event.stopPropagation(); previousImage(); }}
+
+                                    title="Föregående"
+
+                                >
+
+                                    ⬅
+
+                                </button>
+
+                            }
+
+                            {
+
+                                currentIndex < images.length - 1 &&
+
+                                <button
+
+                                    className="lightbox-nav lightbox-next"
+
+                                    onClick={event => { event.stopPropagation(); nextImage(); }}
+
+                                    title="Nästa"
+
+                                >
+
+                                    ➡
+
+                                </button>
+
+                            }
+
+                            <img
+
+                                className="lightbox-image"
+
+                                src={selectedImage.image_url}
+
+                                alt={selectedImage.title}
+
+                                style={{
+
+                                    transform: `translate(${pan.x}px, ${pan.y}px) scale(${zoom})`,
+
+                                    transition: dragState.current ? "none" : "0.25s",
+
+                                    cursor: zoom > 1 ? "grab" : "zoom-out"
+
+                                }}
+
+                                onClick={event => {
+
+                                    event.stopPropagation();
+
+                                    if (zoom === 1) toggleFullscreen();
+
+                                }}
+
+                                onDoubleClick={event => { event.stopPropagation(); toggleZoom(); }}
+
+                                onWheel={handleWheel}
+
+                                onMouseDown={handlePointerDown}
+
+                                onMouseMove={handlePointerMove}
+
+                                onMouseUp={handlePointerUp}
+
+                                onMouseLeave={handlePointerUp}
+
+                            />
+
+                        </div>
+
+                    }
 
                 </>
             }

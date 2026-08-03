@@ -10,7 +10,7 @@ import LectureFileUpload from "./LectureFileUpload";
 import useImages from "../../hooks/useImages";
 import useSlides from "../../hooks/useSlides";
 
-function ImageGallery({ lecture }) {
+function ImageGallery({ lecture, previousLecture, nextLecture, onNavigateLecture }) {
 
     const { images, loading: imagesLoading, addImage, removeImage } = useImages(lecture.id);
 
@@ -22,9 +22,23 @@ function ImageGallery({ lecture }) {
 
         <>
 
-            <LectureFileUpload lecture={lecture} />
-
             <div className="gallery-tabs">
+
+                <button
+
+                    className="pill-button"
+
+                    onClick={() => previousLecture && onNavigateLecture(previousLecture.id)}
+
+                    disabled={!previousLecture}
+
+                    title={previousLecture?.title}
+
+                >
+
+                    ⬅ Föregående föreläsning
+
+                </button>
 
                 <button
 
@@ -47,6 +61,24 @@ function ImageGallery({ lecture }) {
                 >
 
                     📄 Originalslides {slides.length > 0 && `(${slides.length})`}
+
+                </button>
+
+                <LectureFileUpload lecture={lecture} />
+
+                <button
+
+                    className="pill-button"
+
+                    onClick={() => nextLecture && onNavigateLecture(nextLecture.id)}
+
+                    disabled={!nextLecture}
+
+                    title={nextLecture?.title}
+
+                >
+
+                    Nästa föreläsning ➡
 
                 </button>
 

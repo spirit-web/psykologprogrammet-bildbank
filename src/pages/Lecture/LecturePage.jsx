@@ -80,9 +80,21 @@ function LecturePage() {
                     ]}
                 />
 
-                <h1>
+                <h1
 
-                    📚 {lecture.title}
+                    style={{
+
+                        fontSize: 32,
+
+                        lineHeight: 1.3,
+
+                        margin: "20px 0 8px"
+
+                    }}
+
+                >
+
+                    {lecture.title}
 
                 </h1>
 
@@ -94,40 +106,11 @@ function LecturePage() {
 
                 }
 
-                <div style={{ display: "flex", gap: 10, margin: "15px 0" }}>
-
-                    <button
-
-                        onClick={() => previousLecture && navigate(`/lecture/${previousLecture.id}`)}
-
-                        disabled={!previousLecture}
-
-                        title={previousLecture?.title}
-
-                    >
-
-                        ⬅ Föregående föreläsning
-
-                    </button>
-
-                    <button
-
-                        onClick={() => nextLecture && navigate(`/lecture/${nextLecture.id}`)}
-
-                        disabled={!nextLecture}
-
-                        title={nextLecture?.title}
-
-                    >
-
-                        Nästa föreläsning ➡
-
-                    </button>
-
-                </div>
-
                 <ImageGallery
                     lecture={lecture}
+                    previousLecture={previousLecture}
+                    nextLecture={nextLecture}
+                    onNavigateLecture={lectureId => navigate(`/lecture/${lectureId}`)}
                 />
 
             </div>
