@@ -3,7 +3,7 @@ import "./ImageGallery.css";
 import { useState } from "react";
 
 import ImageViewer from "./ImageViewer";
-import QuickImageUpload from "./QuickImageUpload";
+import LinkExistingImages from "./LinkExistingImages";
 import QuickSlideUpload from "./QuickSlideUpload";
 import LectureFileUpload from "./LectureFileUpload";
 
@@ -100,11 +100,13 @@ function ImageGallery({ lecture, previousLecture, nextLecture, onNavigateLecture
 
                     uploadSlot={
 
-                        <QuickImageUpload
+                        <LinkExistingImages
 
-                            lectureId={lecture.id}
+                            lecture={lecture}
 
-                            onUploaded={addImage}
+                            currentImageIds={images.map(image => image.id)}
+
+                            onLinked={addImage}
 
                         />
 

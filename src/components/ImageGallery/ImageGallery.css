@@ -420,6 +420,44 @@ color:white;
 
 }
 
+.link-images-panel{
+
+background:#f7f9fc;
+
+border:1px solid #ddd;
+
+border-radius:12px;
+
+padding:15px;
+
+margin:15px 0;
+
+width:100%;
+
+}
+
+.link-images-header{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:12px;
+
+}
+
+.link-images-grid{
+
+display:flex;
+
+flex-wrap:wrap;
+
+gap:14px;
+
+}
+
 .lecture-file-status{
 
 margin:10px 0;
