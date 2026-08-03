@@ -11,6 +11,7 @@ import AdminPage from "./pages/Admin/AdminPage";
 import FavoritesPage from "./pages/Favorites/FavoritesPage";
 import HippocampusPage from "./pages/Hippocampus/HippocampusPage";
 import CasesPage from "./pages/Cases/CasesPage";
+import RequireAuth from "./components/Admin/RequireAuth";
 
 function App(){
 
@@ -69,7 +70,7 @@ function App(){
 
             <Route
                 path="/admin"
-                element={<AdminPage/>}
+                element={<RequireAuth><AdminPage/></RequireAuth>}
 
             />
 
