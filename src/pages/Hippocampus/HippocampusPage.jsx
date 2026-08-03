@@ -105,7 +105,7 @@ function HippocampusPage() {
 
                     <>
 
-                        <div className="section-grid">
+                        <div className="section-grid" style={{ gridTemplateColumns: "repeat(6, 1fr)", gap: "14px" }}>
 
                             {
 
@@ -117,15 +117,15 @@ function HippocampusPage() {
 
                                         className="section-card"
 
-                                        style={{ cursor: "pointer" }}
+                                        style={{ cursor: "pointer", padding: "16px 10px" }}
 
                                         onClick={() => openTheme(theme)}
 
                                     >
 
-                                        <h1>{theme.icon}</h1>
+                                        <h1 style={{ fontSize: 26, marginBottom: 6 }}>{theme.icon}</h1>
 
-                                        <h3>{theme.name}</h3>
+                                        <h3 style={{ fontSize: 14, marginBottom: 0 }}>{theme.name}</h3>
 
                                     </div>
 

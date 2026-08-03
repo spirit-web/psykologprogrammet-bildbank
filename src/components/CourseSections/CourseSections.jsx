@@ -9,6 +9,13 @@ function CourseSections({ courseId }) {
     const sections = [
 
         {
+            icon:"🧠",
+            title:"Begrepp",
+            text:"Psykologiska koncept",
+            onClick: () => navigate(`/course/${courseId}/begrepp`)
+        },
+
+        {
             icon:"🔧",
             title:"Bilder",
             text:"Alla bilder i kursen",
