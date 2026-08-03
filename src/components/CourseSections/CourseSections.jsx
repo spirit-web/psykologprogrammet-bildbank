@@ -19,11 +19,7 @@ function CourseSections({ courseId }) {
             icon:"📚",
             title:"Föreläsningar",
             text:"Visa alla föreläsningar",
-            onClick: () => {
-
-                document.getElementById("lectures-section")?.scrollIntoView({ behavior: "smooth" });
-
-            }
+            onClick: () => navigate(`/course/${courseId}/forelasningar`)
         },
 
         {

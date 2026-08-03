@@ -8,7 +8,6 @@ import BackButton from "../../components/BackButton/BackButton";
 import ImageViewer from "../../components/ImageGallery/ImageViewer";
 import CourseHeader from "../../components/CourseHeader/CourseHeader";
 import CourseSections from "../../components/CourseSections/CourseSections";
-import LectureList from "../../components/LectureList/LectureList";
 
 import useCourse from "../../hooks/useCourse";
 import useCourseImages from "../../hooks/useCourseImages";
@@ -50,12 +49,6 @@ function CourseThemesPage() {
                 <CourseHeader course={course} />
 
                 <CourseSections courseId={course.id} />
-
-                <div id="lectures-section">
-
-                    <LectureList course={course} />
-
-                </div>
 
             </div>
 

@@ -3,6 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import Navbar from "./components/Navbar/Navbar";
 
 import HomePage from "./pages/Home/HomePage";
+import CourseLecturesPage from "./pages/Course/CourseLecturesPage";
 import CourseImagesPage from "./pages/Course/CourseImagesPage";
 import CourseSlidesPage from "./pages/Course/CourseSlidesPage";
 import CourseThemesPage from "./pages/Course/CourseThemesPage";
@@ -31,6 +32,11 @@ function App(){
             <Route
                 path="/course/:id"
                 element={<CourseThemesPage/>}
+            />
+
+            <Route
+                path="/course/:id/forelasningar"
+                element={<CourseLecturesPage/>}
             />
 
             <Route
