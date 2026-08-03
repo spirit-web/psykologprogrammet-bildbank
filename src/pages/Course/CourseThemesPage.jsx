@@ -52,9 +52,9 @@ function CourseThemesPage() {
 
             </div>
 
-            <div style={{ maxWidth: "800px", margin: "50px auto 0" }}>
+            <div style={{ maxWidth: "800px", margin: "0 auto" }}>
 
-                <h1 style={{ fontSize: 32, lineHeight: 1.3, margin: "20px 0 8px" }}>🧠 Begrepp — {course?.name}</h1>
+                <h1 style={{ fontSize: 32, lineHeight: 1.3, margin: "0 0 8px" }}>🧠 Begrepp — {course?.name}</h1>
 
                 <p>Alla koncept som finns representerade i kursens bilder.</p>
 

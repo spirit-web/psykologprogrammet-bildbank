@@ -9,7 +9,7 @@ import useFavorites from "../../hooks/useFavorites";
 import { deleteImage } from "../../services/adminDatabase";
 import { supabase } from "../../services/supabase";
 
-function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = true, onDeleted, hideGrid = false, startId = null, onCloseLightbox }) {
+function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = true, onDeleted, hideGrid = false, startId = null, onCloseLightbox, layout = "compact" }) {
 
     const { isFavorite, toggleFavorite } = useFavorites();
 
@@ -310,6 +310,121 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
     }, [currentIndex]);
 
+    const controlsRow = (
+
+        <div className="zoom-toolbar">
+
+            <button onClick={zoomOut}>➖</button>
+
+            <span>{Math.round(zoom * 100)}%</span>
+
+            <button onClick={zoomIn}>➕</button>
+
+            <button onClick={downloadImage} title="Ladda ned bild">
+                ⬇
+            </button>
+
+            {
+                showActions && selectedImage &&
+                <>
+                    <button
+                        onClick={() => toggleFavorite(selectedImage.id)}
+                        className={isFavorite(selectedImage.id) ? "favorite-active" : ""}
+                        title="Favorit"
+                    >
+                        {isFavorite(selectedImage.id) ? "⭐" : "☆"}
+                    </button>
+
+                    <ThemeTagger imageId={selectedImage.id} />
+
+                    <button
+
+                        onClick={handleDelete}
+
+                        disabled={deleting}
+
+                        className="delete-image-button"
+
+                    >
+
+                        {deleting ? "Tar bort..." : "🗑 Ta bort bild"}
+
+                    </button>
+                </>
+            }
+
+            <span>
+                Bild {currentIndex + 1} av {images.length}
+            </span>
+
+        </div>
+
+    );
+
+    const mainImageBlock = (
+
+        <>
+
+            <div
+
+                className="main-image-wrapper"
+
+                style={{ cursor: "zoom-in" }}
+
+            >
+
+                <img
+
+                    className="main-image"
+
+                    src={selectedImage?.image_url}
+
+                    alt={selectedImage?.title}
+
+                    onClick={toggleFullscreen}
+
+                />
+
+            </div>
+
+            <p className="image-title">
+                {selectedImage?.title}
+            </p>
+
+        </>
+
+    );
+
+    const gridBlock = (
+
+        <div className="gallery-grid">
+
+            {
+                images.map((image, index) => (
+
+                    <div
+                        key={image.id}
+                        ref={element => thumbnailRefs.current[index] = element}
+                    >
+
+                        <SlideThumbnail
+                            image={image}
+                            active={image.id === selectedImage?.id}
+                            onClick={() => {
+                                setSelectedImage(image);
+                                resetView();
+                            }}
+                        />
+
+                    </div>
+
+                ))
+            }
+
+        </div>
+
+    );
+
     return (
 
         <>
@@ -326,11 +441,13 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
                 <p>{emptyMessage || "Inga bilder ännu."}</p>
             }
 
+            {!hideGrid && layout === "browse" && gridBlock}
+
             {
                 selectedImage &&
                 <>
                 {
-                    !hideGrid &&
+                    !hideGrid && layout === "compact" &&
                     <>
                     <div className="image-navigation">
 
@@ -348,74 +465,18 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
 
                     </div>
 
-                    <div className="zoom-toolbar">
+                    {controlsRow}
 
-                        <button onClick={zoomOut}>➖</button>
+                    {mainImageBlock}
+                    </>
+                }
 
-                        <span>{Math.round(zoom * 100)}%</span>
+                {
+                    !hideGrid && layout === "browse" &&
+                    <>
+                    {mainImageBlock}
 
-                        <button onClick={zoomIn}>➕</button>
-
-                        <button onClick={downloadImage} title="Ladda ned bild">
-                            ⬇
-                        </button>
-
-                        {
-                            showActions &&
-                            <>
-                                <button
-                                    onClick={() => toggleFavorite(selectedImage.id)}
-                                    className={isFavorite(selectedImage.id) ? "favorite-active" : ""}
-                                    title="Favorit"
-                                >
-                                    {isFavorite(selectedImage.id) ? "⭐" : "☆"}
-                                </button>
-
-                                <ThemeTagger imageId={selectedImage.id} />
-
-                                <button
-
-                                    onClick={handleDelete}
-
-                                    disabled={deleting}
-
-                                    className="delete-image-button"
-
-                                >
-
-                                    {deleting ? "Tar bort..." : "🗑 Ta bort bild"}
-
-                                </button>
-                            </>
-                        }
-
-                    </div>
-
-                    <div
-
-                        className="main-image-wrapper"
-
-                        style={{ cursor: "zoom-in" }}
-
-                    >
-
-                        <img
-
-                            className="main-image"
-
-                            src={selectedImage.image_url}
-
-                            alt={selectedImage.title}
-
-                            onClick={toggleFullscreen}
-
-                        />
-
-                    </div>
-
-                    <p className="image-title">
-                        {selectedImage.title}
-                    </p>
+                    {controlsRow}
                     </>
                 }
 
@@ -518,35 +579,7 @@ function ImageViewer({ images, loading, emptyMessage, uploadSlot, showActions = 
                 </>
             }
 
-            {!hideGrid &&
-
-            <div className="gallery-grid">
-
-                {
-                    images.map((image, index) => (
-
-                        <div
-                            key={image.id}
-                            ref={element => thumbnailRefs.current[index] = element}
-                        >
-
-                            <SlideThumbnail
-                                image={image}
-                                active={image.id === selectedImage?.id}
-                                onClick={() => {
-                                    setSelectedImage(image);
-                                    resetView();
-                                }}
-                            />
-
-                        </div>
-
-                    ))
-                }
-
-            </div>
-
-            }
+            {!hideGrid && layout === "compact" && gridBlock}
 
         </>
 
