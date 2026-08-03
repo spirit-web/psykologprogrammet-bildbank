@@ -9,20 +9,20 @@ const NEUTRAL_TOPS = ["shortFlat", "shortRound", "shortWaved", "bob", "straight0
 const CASE_AVATARS = {
 
     "Emma, 23 år": { top: "straight02", hairColor: "4a312c", skinColor: "edb98a", mouth: "concerned", eyebrows: "sadConcernedNatural", eyes: "default" },
-    "Johan, 35 år": { top: "shortWaved", facialHair: "beardLight", hairColor: "a55728", skinColor: "ffdbb4", mouth: "concerned", eyebrows: "sadConcernedNatural", eyes: "default" },
+    "Johan, 35 år": { top: "shortWaved", facialHair: "beardLight", hairColor: "a55728", facialHairColor: "a55728", skinColor: "ffdbb4", mouth: "concerned", eyebrows: "sadConcernedNatural", eyes: "default" },
     "Fatima, 52 år": { top: "hijab", hairColor: "2c1b18", skinColor: "ae5d29", mouth: "sad", eyebrows: "sadConcernedNatural", eyes: "cry" },
 
     "Linus, 19 år": { top: "shaggy", hairColor: "d6b370", skinColor: "ffdbb4", mouth: "sad", eyebrows: "sadConcernedNatural", eyes: "default" },
     "Sofia, 42 år": { top: "bob", hairColor: "724133", skinColor: "edb98a", mouth: "sad", eyebrows: "sadConcernedNatural", eyes: "default" },
-    "Henrik, 58 år": { top: "shortRound", facialHair: "beardMedium", hairColor: "e8e1e1", skinColor: "ffdbb4", mouth: "sad", eyebrows: "sadConcernedNatural", eyes: "closed" },
+    "Henrik, 58 år": { top: "shortRound", facialHair: "beardMedium", hairColor: "e8e1e1", facialHairColor: "e8e1e1", skinColor: "ffdbb4", mouth: "sad", eyebrows: "sadConcernedNatural", eyes: "closed" },
 
     "Elias, 11 år": { top: "shortFlat", hairColor: "2c1b18", skinColor: "edb98a", mouth: "serious", eyebrows: "flatNatural", eyes: "default" },
     "Sara, 27 år": { top: "straight01", hairColor: "c93305", skinColor: "f8d25c", mouth: "concerned", eyebrows: "raisedExcitedNatural", eyes: "squint" },
     "Anton, 35 år": { top: "shortFlat", hairColor: "2c1b18", skinColor: "d08b5b", mouth: "default", eyebrows: "flatNatural", eyes: "default" },
 
     "Klara, 24 år": { top: "curly", hairColor: "b58143", skinColor: "ffdbb4", mouth: "smile", eyebrows: "defaultNatural", eyes: "default" },
-    "Peter, 39 år": { top: "theCaesar", facialHair: "beardMedium", hairColor: "724133", skinColor: "edb98a", mouth: "concerned", eyebrows: "sadConcernedNatural", eyes: "default" },
-    "Lars, 61 år": { top: "shortRound", facialHair: "beardMajestic", hairColor: "e8e1e1", skinColor: "ffdbb4", mouth: "sad", eyebrows: "sadConcernedNatural", eyes: "squint" },
+    "Peter, 39 år": { top: "theCaesar", facialHair: "beardMedium", hairColor: "724133", facialHairColor: "724133", skinColor: "edb98a", mouth: "concerned", eyebrows: "sadConcernedNatural", eyes: "default" },
+    "Lars, 61 år": { top: "shortRound", facialHair: "beardMajestic", hairColor: "e8e1e1", facialHairColor: "e8e1e1", skinColor: "ffdbb4", mouth: "sad", eyebrows: "sadConcernedNatural", eyes: "squint" },
 
     "Leo, 10 år": { top: "frizzle", hairColor: "a55728", skinColor: "d08b5b", mouth: "twinkle", eyebrows: "raisedExcitedNatural", eyes: "happy" },
     "Amanda, 31 år": { top: "curly", hairColor: "c93305", skinColor: "edb98a", mouth: "concerned", eyebrows: "upDownNatural", eyes: "default" },
@@ -38,7 +38,7 @@ const CASE_AVATARS = {
 
     "Kevin, 15 år": { top: "shaggyMullet", hairColor: "2c1b18", skinColor: "f8d25c", mouth: "smile", eyebrows: "defaultNatural", eyes: "happy" },
     "Johanna, 28 år": { top: "straight02", hairColor: "724133", skinColor: "edb98a", mouth: "concerned", eyebrows: "sadConcernedNatural", eyes: "default" },
-    "Mikael, 52 år": { top: "theCaesarAndSidePart", facialHair: "beardLight", hairColor: "e8e1e1", skinColor: "ffdbb4", mouth: "sad", eyebrows: "sadConcernedNatural", eyes: "default" },
+    "Mikael, 52 år": { top: "theCaesarAndSidePart", facialHair: "beardLight", hairColor: "e8e1e1", facialHairColor: "e8e1e1", skinColor: "ffdbb4", mouth: "sad", eyebrows: "sadConcernedNatural", eyes: "default", accessories: "wayfarers" },
 
     "Nora, 22 år": { top: "miaWallace", hairColor: "4a312c", skinColor: "edb98a", mouth: "default", eyebrows: "defaultNatural", eyes: "default" },
     "Daniel, 35 år": { top: "sides", hairColor: "2c1b18", skinColor: "d08b5b", mouth: "concerned", eyebrows: "sadConcernedNatural", eyes: "default" },
@@ -100,10 +100,29 @@ export function getAvatarUrl(name) {
     params.append("eyebrows[]", traits.eyebrows);
     params.append("eyes[]", traits.eyes);
 
+    // DiceBear rolls its own random chance for facial hair and accessories
+    // unless we pin the probability explicitly - without this, avatars
+    // could randomly end up with an unwanted beard or glasses.
     if (traits.facialHair) {
 
         params.append("facialHair[]", traits.facialHair);
+        params.append("facialHairColor[]", traits.facialHairColor || traits.hairColor);
         params.set("facialHairProbability", "100");
+
+    } else {
+
+        params.set("facialHairProbability", "0");
+
+    }
+
+    if (traits.accessories) {
+
+        params.append("accessories[]", traits.accessories);
+        params.set("accessoriesProbability", "100");
+
+    } else {
+
+        params.set("accessoriesProbability", "0");
 
     }
 
